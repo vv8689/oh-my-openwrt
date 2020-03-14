@@ -10,9 +10,12 @@ WARNING="\033[33m * Warning: $NORM"
 # tips
 echo -e "$INFO Welcome to Awesome OpenWrt oh-my-openwrt!"
 echo
-echo "        1. 编译 Awesome OpenWrt for xiaomi"
-echo "        2. 编译 Awesome OpenWrt for newifi3"
-echo "        3. 编译 Awesome OpenWrt for x86_64"
+echo "        1. 快速编译 Awesome OpenWrt for xiaomi"
+echo "        2. 快速编译 Awesome OpenWrt for newifi3"
+echo "        3. 快速编译 Awesome OpenWrt for x86_64"
+echo "        4. 源码编译 Awesome OpenWrt for xiaomi"
+echo "        5. 源码编译 Awesome OpenWrt for newifi3"
+echo "        6. 源码编译 Awesome OpenWrt for x86_64"
 echo "        8. 索引 ipks 并签名 (此过程无需翻墙!)"
 echo "        9. 安装编译所需软件包 (此过程无需翻墙!)"
 echo "        0. 更新 oh-my-openwrt"
@@ -37,8 +40,11 @@ while true; do
         1 ) bash scripts/xiaomi-r1cl.sh; break;;
         2 ) bash scripts/newifi3.sh; break;;
         3 ) bash scripts/x86_64.sh; break;;
+        4 ) bash scripts/source.sh; break;;
+        5 ) bash scripts/source.sh; break;;
+        6 ) bash scripts/source.sh; break;;
 
-        8 ) bash scripts/index_sign.sh; exit;;
+        8 ) bash scripts/sign.sh; exit;;
         9 ) bash scripts/dependency.sh; break;;
         * ) echo "输入 0-9 以确认";;
     esac

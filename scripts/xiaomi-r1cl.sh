@@ -320,7 +320,11 @@ do_build_bin(){
         files_path="$script_root_path/devices/$device/sysupgrade"
     fi
 
-    make image PROFILE=$device_profile PACKAGES="${image_pkgs}" FILES=$files_path
+    if [ -d $files_path ]; then
+        make image PROFILE=$device_profile PACKAGES="${image_pkgs}" FILES=$files_path
+    else
+        make image PROFILE=$device_profile PACKAGES="${image_pkgs}"
+    fi
 
     echo -e "$INFO build $build_type bin done!"
 }
