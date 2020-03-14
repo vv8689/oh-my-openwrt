@@ -117,9 +117,9 @@ pre_archive_dir
 # add packages to feeds.conf
 add_packages2feeds(){
     # import stuart code to sdk
-    if [ `grep -c "src-git stuart https://github.com/stuarthua/openwrt-packages" $sdk_path/feeds.conf.default` -eq 0 ]; then
+    if [ `grep -c "src-git stuart https://github.com/awesome-openwrt/openwrt-packages" $sdk_path/feeds.conf.default` -eq 0 ]; then
         echo "add packages to feeds..."
-        echo "src-git stuart https://github.com/stuarthua/openwrt-packages">>$sdk_path/feeds.conf.default
+        echo "src-git stuart https://github.com/awesome-openwrt/openwrt-packages">>$sdk_path/feeds.conf.default
         echo -e "$INFO add packages to feeds done!"
     fi
 }
