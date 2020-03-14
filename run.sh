@@ -13,11 +13,14 @@ echo
 echo "        1. 快速编译 Awesome OpenWrt for xiaomi"
 echo "        2. 快速编译 Awesome OpenWrt for newifi3"
 echo "        3. 快速编译 Awesome OpenWrt for x86_64"
+echo
 echo "        4. 源码编译 Awesome OpenWrt for xiaomi"
 echo "        5. 源码编译 Awesome OpenWrt for newifi3"
 echo "        6. 源码编译 Awesome OpenWrt for x86_64"
+echo
 echo "        8. 索引 ipks 并签名 (此过程无需翻墙!)"
 echo "        9. 安装编译所需软件包 (此过程无需翻墙!)"
+echo
 echo "        0. 更新 oh-my-openwrt"
 echo
 
