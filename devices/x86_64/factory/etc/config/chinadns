@@ -1,0 +1,9 @@
+
+config chinadns
+	option chnroute '/etc/chinadns_chnroute.txt'
+	option addr '0.0.0.0'
+	option enable '1'
+	option bidirectional '1'
+	option port '5330'
+	option server '119.29.29.29,127.0.0.1#5311'
+

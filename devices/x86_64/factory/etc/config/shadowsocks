@@ -1,0 +1,41 @@
+
+config general
+	option startup_delay '5'
+
+config transparent_proxy
+	option local_port '1234'
+	option mtu '1492'
+	list main_server 'nil'
+	option udp_relay_server 'same'
+
+config socks5_proxy
+	list server 'nil'
+	option local_port '1080'
+	option mtu '1492'
+
+config port_forward
+	list server 'nil'
+	option local_port '5300'
+	option destination '8.8.4.4:53'
+	option mtu '1492'
+
+config servers
+	option no_delay '1'
+	option timeout '60'
+	option encrypt_method 'chacha20-ietf-poly1305'
+	option alias 'sample'
+	option fast_open '1'
+	option server '127.0.0.1'
+	option server_port '8888'
+	option password 'iamsecret'
+
+config access_control
+	option self_proxy '1'
+	option wan_bp_list '/dev/null'
+	list wan_bp_ips '0.0.0.0/1'
+	list wan_bp_ips '128.0.0.0/1'
+	list wan_fw_ips '8.8.4.4'
+	list wan_fw_ips '8.8.8.8'
+	option lan_target 'SS_SPEC_WAN_AC'
+	option ipt_ext '-m multiport --dports 53,80,443'
+

@@ -1,0 +1,1 @@
+30 4 * * *    sh /root/update_chnroute_dnsmasqconf_list.sh > /dev/null 2>&1
