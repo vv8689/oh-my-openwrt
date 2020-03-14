@@ -8,11 +8,11 @@ ERROR="\033[31m *** Error: $NORM"
 WARNING="\033[33m * Warning: $NORM"
 
 # tips
-echo -e "$INFO Welcome to Stuart's oh-my-openwrt!"
+echo -e "$INFO Welcome to Awesome OpenWrt oh-my-openwrt!"
 echo
-echo "        1. 编译 stuart openwrt for xiaomi"
-echo "        2. 编译 stuart openwrt for newifi3"
-echo "        3. 编译 stuart openwrt for x86_64"
+echo "        1. 编译 Awesome OpenWrt for xiaomi"
+echo "        2. 编译 Awesome OpenWrt for newifi3"
+echo "        3. 编译 Awesome OpenWrt for x86_64"
 echo "        8. 索引 ipks 并签名 (此过程无需翻墙!)"
 echo "        9. 安装编译所需软件包 (此过程无需翻墙!)"
 echo "        0. 更新 oh-my-openwrt"
