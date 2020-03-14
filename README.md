@@ -4,12 +4,10 @@
 
 ---
 
-Reading: [gh-pages](https://stuarthua.github.io/oh-my-openwrt/)
-
 ## Usage
 
 ```bash
-git clone https://github.com/stuarthua/oh-my-openwrt
+git clone https://github.com/awesome-openwrt/oh-my-openwrt.git
 cd oh-my-openwrt
 ./run.sh
 ```
