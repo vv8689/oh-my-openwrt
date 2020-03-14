@@ -96,8 +96,8 @@ pre_archive_dir(){
         mkdir -p $artifact_bin_path
     fi
     ## dir ipks
-    if [ ! -d $ipk_path/stuart ]; then
-        mkdir -p $ipk_path/stuart
+    if [ ! -d $ipk_path/awesome ]; then
+        mkdir -p $ipk_path/awesome
     fi
     # 软链接，方便快速查看
     if [ ! -L $device_path/ipks ]; then
@@ -116,10 +116,10 @@ pre_archive_dir
 ######################## feeds update and install ########################
 # add packages to feeds.conf
 add_packages2feeds(){
-    # import stuart code to sdk
-    if [ `grep -c "src-git stuart https://github.com/awesome-openwrt/openwrt-packages" $sdk_path/feeds.conf.default` -eq 0 ]; then
+    # import awesome code to sdk
+    if [ `grep -c "src-git awesome https://github.com/awesome-openwrt/openwrt-packages" $sdk_path/feeds.conf.default` -eq 0 ]; then
         echo "add packages to feeds..."
-        echo "src-git stuart https://github.com/awesome-openwrt/openwrt-packages">>$sdk_path/feeds.conf.default
+        echo "src-git awesome https://github.com/awesome-openwrt/openwrt-packages">>$sdk_path/feeds.conf.default
         echo -e "$INFO add packages to feeds done!"
     fi
 }
@@ -130,7 +130,7 @@ do_pre_feeds(){
     echo "update/install feeds..."
     cd $sdk_path
     ./scripts/feeds update -a && ./scripts/feeds install -a
-    # ./scripts/feeds update stuart && ./scripts/feeds install -a -p stuart
+    # ./scripts/feeds update awesome && ./scripts/feeds install -a -p awesome
     echo -e "$INFO update/install feeds done!"
 }
 pre_feeds(){
@@ -215,8 +215,8 @@ do_build_ipks(){
     cd $sdk_path
 
     # clean dir
-    rm -rf $ipk_path/stuart
-    mkdir -p $ipk_path/stuart
+    rm -rf $ipk_path/awesome
+    mkdir -p $ipk_path/awesome
 
     ################# start build for detail ######################
 
@@ -230,7 +230,6 @@ do_build_ipks(){
     # make package/luci-app-ipsec-vpnd/compile V=s                     # luci IPSec VPN
     # make package/luci-app-mia/compile V=s                            # luci 上网时间控制
     # make package/luci-app-ramfree/compile V=s                        # luci 释放内存
-    # make package/luci-app-stuart/compile V=s                         # luci Example，无用
     # make package/luci-app-timewol/compile V=s                        # luci 定时唤醒
     # make package/luci-app-ttyd/compile V=s                           # luci 网页终端
     # make package/luci-app-vlmcsd/compile V=s                         # luci KMS 服务器
@@ -250,7 +249,7 @@ do_build_ipks(){
 build_ipks(){
     while true; do
         echo -n -e "$INPUT"
-        read -p "是否编译 Stuart 软件包 (y/n) ? " yn
+        read -p "是否编译 Awesome OpenWrt 软件包 (y/n) ? " yn
         echo
         case $yn in
             [Yy]* ) do_build_ipks; break;;
@@ -263,7 +262,7 @@ build_ipks
 
 # 归档 ipks
 do_archive_ipks(){
-    cd $ipk_path/stuart
+    cd $ipk_path/awesome
     cp -f *_all.ipk $artifact_ipk_path/luci
     cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$device
 }
@@ -279,7 +278,7 @@ archive_ipks(){
         esac
     done
 }
-result=`ls $ipk_path/stuart`
+result=`ls $ipk_path/awesome`
 if [ -n "$result" ]; then
     archive_ipks
 fi
@@ -293,29 +292,29 @@ do_build_bin(){
     # clean
     rm -rf $bin_path
     mkdir -p $bin_path
-    rm -rf $imagebuilder_path/packages/stuart
+    rm -rf $imagebuilder_path/packages/awesome
 
     # add ipks to imagebuilder
-    mkdir -p $imagebuilder_path/packages/stuart
-    cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/stuart/
-    cp -f $artifact_ipk_path/base/$device/* $imagebuilder_path/packages/stuart/
-    # cp -r $ipk_path/stuart $imagebuilder_path/packages
+    mkdir -p $imagebuilder_path/packages/awesome
+    cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
+    cp -f $artifact_ipk_path/base/$device/* $imagebuilder_path/packages/awesome/
+    # cp -r $ipk_path/awesome $imagebuilder_path/packages
 
     # 查看固件已安装软件包 echo $(opkg list_installed | awk '{ print $1 }')
     org_original_pkgs="base-files busybox dnsmasq dropbear firewall fstools fwtool hostapd-common ip6tables iptables iw iwinfo jshn jsonfilter kernel kmod-cfg80211 kmod-gpio-button-hotplug kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-nat kmod-ipt-offload kmod-leds-gpio kmod-lib-crc-ccitt kmod-mac80211 kmod-mt76 kmod-mt76-core kmod-mt7603 kmod-mt76x02-common kmod-mt76x2 kmod-mt76x2-common kmod-nf-conntrack kmod-nf-conntrack6 kmod-nf-flow kmod-nf-ipt kmod-nf-ipt6 kmod-nf-nat kmod-nf-reject kmod-nf-reject6 kmod-nls-base kmod-ppp kmod-pppoe kmod-pppox kmod-slhc libblobmsg-json libc libgcc libip4tc libip6tc libiwinfo libiwinfo-lua libjson-c libjson-script liblua liblucihttp liblucihttp-lua libnl-tiny libpthread libubox libubus libubus-lua libuci libuclient libxtables logd lua luci luci-app-firewall luci-base luci-lib-ip luci-lib-jsonc luci-lib-nixio luci-mod-admin-full luci-proto-ipv6 luci-proto-ppp luci-theme-bootstrap mtd netifd odhcp6c odhcpd-ipv6only openwrt-keyring opkg ppp ppp-mod-pppoe procd rpcd rpcd-mod-rrdns swconfig ubox ubus ubusd uci uclient-fetch uhttpd usign wireless-regdb wpad-mini"
     org_custom_pkgs="luci-i18n-base-zh-cn -kmod-usb-core -kmod-usb2 -kmod-usb-ohci -kmod-usb-ledtrig-usbport luci-i18n-firewall-zh-cn libustream-mbedtls ca-bundle ca-certificates wget curl vsftpd openssh-sftp-server -dnsmasq dnsmasq-full"
 
-    # 查看自定义软件包 ./scripts/feeds list -r stuart
+    # 查看自定义软件包 ./scripts/feeds list -r awesome
     ## factory
-    stuart_factory_pkgs="luci-app-ramfree luci-app-fileassistant luci-app-arpbind luci-i18n-arpbind-zh-cn luci-app-autoreboot luci-i18n-autoreboot-zh-cn ttyd luci-app-ttyd luci-i18n-ttyd-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
+    awesome_factory_pkgs="luci-app-ramfree luci-app-fileassistant luci-app-arpbind luci-i18n-arpbind-zh-cn luci-app-autoreboot luci-i18n-autoreboot-zh-cn ttyd luci-app-ttyd luci-i18n-ttyd-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
     ## sysupgrade
-    stuart_sysupgrade_pkgs="$stuart_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn luci-app-ipsec-vpnd luci-i18n-ipsec-vpnd-zh-cn sqm-scripts luci-app-sqm"
+    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn luci-app-ipsec-vpnd luci-i18n-ipsec-vpnd-zh-cn sqm-scripts luci-app-sqm"
 
     if [ $build_type == "factory" ]; then
-        image_pkgs="$org_original_pkgs $org_custom_pkgs $stuart_factory_pkgs"
+        image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
         files_path="$script_root_path/devices/$device/factory"
     else
-        image_pkgs="$org_original_pkgs $org_custom_pkgs $stuart_sysupgrade_pkgs"
+        image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_sysupgrade_pkgs"
         files_path="$script_root_path/devices/$device/sysupgrade"
     fi
 
@@ -341,7 +340,7 @@ choose_build_type(){
 build_bin(){
     while true; do
         echo -n -e "$INPUT"
-        read -p "是否编译 Stuart 固件 (y/n) ? " yn
+        read -p "是否编译 Awesome OpenWrt 固件 (y/n) ? " yn
         echo
         case $yn in
             [Yy]* ) choose_build_type; break;;
@@ -361,7 +360,7 @@ fi
 do_archive_bins(){
     result=`ls $bin_path`
     cd $bin_path
-    cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/stuart-openwrt-$version-$device-$build_type${bin_ext}
+    cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${bin_ext}
 }
 archive_bins(){
     while true; do
