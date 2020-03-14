@@ -241,8 +241,8 @@ do_build_ipks(){
 
     # make package/v2ray/compile V=s
     # make package/trojan/compile V=s
-    # make package/luci-app-passwall-mini/compile V=s
-    # make package/luci-app-ssr-plus-mini/compile V=s
+    make package/luci-app-passwall-mini/compile V=s
+    make package/luci-app-ssr-plus-mini/compile V=s
 
     ################# end build for detail ######################
 
