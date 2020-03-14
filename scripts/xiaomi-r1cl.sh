@@ -239,8 +239,10 @@ do_build_ipks(){
     # make package/luci-app-xlnetacc/compile V=s                       # luci 迅雷快鸟
     # make package/luci-i18n-sqm/compile V=s                           # sqm 语言包
 
-    make package/v2ray/compile V=s
-    make package/luci-app-passwall-mini/compile V=s
+    # make package/v2ray/compile V=s
+    # make package/trojan/compile V=s
+    # make package/luci-app-passwall-mini/compile V=s
+    # make package/luci-app-ssr-plus-mini/compile V=s
 
     ################# end build for detail ######################
 

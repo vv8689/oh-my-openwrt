@@ -121,7 +121,7 @@ gen_index(){
     $code_path/scripts/ipkg-make-index.sh . 2>/dev/null > Packages.manifest
     grep -vE '^(Maintainer|LicenseFiles|Source|Require)' Packages.manifest > Packages
     gzip -9nc Packages > Packages.gz
-    $code_path/staging_dir/host/bin/usign -S -m Packages -s $root_path/openwrt-stuart.key
+    $code_path/staging_dir/host/bin/usign -S -m Packages -s $root_path/openwrt-awesome.key
 }
 
 index_ipk(){
@@ -164,10 +164,10 @@ dir_index_ipk(){
 }
 
 # gen key
-if [ ! -e $root_path/openwrt-stuart.key ]; then
-    echo "openwrt-stuart.key gen..."
-    $code_path/staging_dir/host/bin/usign -G -p $root_path/openwrt-stuart.pub -s $root_path/openwrt-stuart.key
-    echo -e "$INFO openwrt-stuart.key gen done!"
+if [ ! -e $root_path/openwrt-awesome.key ]; then
+    echo "openwrt-awesome.key gen..."
+    $code_path/staging_dir/host/bin/usign -G -p $root_path/openwrt-awesome.pub -s $root_path/openwrt-awesome.key
+    echo -e "$INFO openwrt-awesome.key gen done!"
 fi
 
 while true; do

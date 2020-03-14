@@ -13,11 +13,11 @@ set -e
 ######################## build dependency ########################
 
 ## for missing ncurses(libncurses.so or ncurses.h), 'unzip', Python 2.x, openssl, make, upx(for v2ray)
-do_install_dep_stuart(){
-    echo "install build dependency for stuart begin..."
+do_install_dep_awesome(){
+    echo "install build dependency for awesome begin..."
     sudo apt update
     sudo apt install -y libncurses5-dev unzip python libssl-dev build-essential upx
-    echo -e "$INFO install build dependency for stuart done!"
+    echo -e "$INFO install build dependency for awesome done!"
 }
 
 # install build dependency
@@ -31,7 +31,7 @@ do_install_dep_lean(){
 }
 
 do_install_dep(){
-    do_install_dep_stuart
+    do_install_dep_awesome
     # do_install_dep_lean
 }
 
