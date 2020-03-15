@@ -216,7 +216,7 @@ pre_feeds
 default_config(){
     cd $sdk_path
     if [ ! -e .config ]; then
-        if [ -d $script_root_path/devices ]; then
+        if [ -e $script_root_path/devices/$device/config.buildinfo ]; then
             cp -f $script_root_path/devices/$device/config.buildinfo .config
         fi
     fi
