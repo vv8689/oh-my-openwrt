@@ -60,12 +60,6 @@ gen_device_desc(){
         echo -e "$INFO End!"
         exit
     fi
-
-    device="xiaomi"
-    cpu1="ramips"
-    cpu2="mt76x8"
-    cpu_arch="mipsel_24kc"
-    device_profile="miwifi-nano"
     
     imagebuilder_url="http://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
     sdk_url="https://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
