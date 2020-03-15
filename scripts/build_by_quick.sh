@@ -160,7 +160,7 @@ pre_archive_dir(){
     if [ ! -d $artifact_ipk_path ]; then
         mkdir -p $artifact_ipk_path
         mkdir -p $artifact_ipk_path/luci
-        mkdir -p $artifact_ipk_path/base/$device
+        mkdir -p $artifact_ipk_path/base/$cpu_arch
     fi
     echo -e "$INFO archive dir already set done!"
 }
@@ -323,7 +323,7 @@ build_ipks
 do_archive_ipks(){
     cd $ipk_path/awesome
     cp -f *_all.ipk $artifact_ipk_path/luci
-    cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$device
+    cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
 }
 archive_ipks(){
     while true; do
@@ -356,7 +356,7 @@ do_build_bin(){
     # add ipks to imagebuilder
     mkdir -p $imagebuilder_path/packages/awesome
     cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
-    cp -f $artifact_ipk_path/base/$device/* $imagebuilder_path/packages/awesome/
+    cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
     # cp -r $ipk_path/awesome $imagebuilder_path/packages
 
     # 查看固件已安装软件包 echo $(opkg list_installed | awk '{ print $1 }')
@@ -413,7 +413,7 @@ build_bin(){
     done
 }
 
-result=`ls $artifact_ipk_path/luci`
+result=`ls $artifact_ipk_path/base/$cpu_arch`
 if [ -n "$result" ]; then
     build_type="factory"
     build_bin
