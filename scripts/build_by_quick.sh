@@ -278,6 +278,8 @@ do_build_ipks(){
 
     ################# start build for detail ######################
 
+    # 查看自定义软件包 ./scripts/feeds list -r awesome
+
     # make package/luci-app-usb-printer/compile V=s                    # luci USB 打印服务器
 
     # make package/ddns-scripts_aliyun/compile V=s                     # aliyun ddns
@@ -297,6 +299,7 @@ do_build_ipks(){
     # make package/luci-app-xlnetacc/compile V=s                       # luci 迅雷快鸟
     # make package/luci-i18n-sqm/compile V=s                           # sqm 语言包
 
+    ############## Test
     # make package/v2ray/compile V=s
     # make package/trojan/compile V=s
     make package/luci-app-passwall-mini/compile V=s
