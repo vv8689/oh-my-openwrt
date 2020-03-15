@@ -10,15 +10,10 @@ WARNING="\033[33m * Warning: $NORM"
 # tips
 echo -e "$INFO Welcome to Awesome OpenWrt oh-my-openwrt!"
 echo
-echo "        1. 快速编译 Awesome OpenWrt for xiaomi"
-echo "        2. 快速编译 Awesome OpenWrt for newifi3"
-echo "        3. 快速编译 Awesome OpenWrt for x86_64"
+echo "        1. 快速编译 Awesome OpenWrt"
+echo "        2. 源码编译 Awesome OpenWrt"
 echo
-echo "        4. 源码编译 Awesome OpenWrt for xiaomi"
-echo "        5. 源码编译 Awesome OpenWrt for newifi3"
-echo "        6. 源码编译 Awesome OpenWrt for x86_64"
-echo
-echo "        8. 索引 ipks 并签名 (此过程无需翻墙!)"
+echo "        8. 签名 ipks (此过程无需翻墙!)"
 echo "        9. 安装编译所需软件包 (此过程无需翻墙!)"
 echo
 echo "        0. 更新 oh-my-openwrt"
@@ -40,12 +35,8 @@ while true; do
         "" ) echo -e "$INFO Exit!"; exit;;
         0 ) do_update_omo; exit;;
 
-        1 ) bash scripts/xiaomi-r1cl.sh; break;;
-        2 ) bash scripts/newifi3.sh; break;;
-        3 ) bash scripts/x86_64.sh; break;;
-        4 ) bash scripts/source.sh; break;;
-        5 ) bash scripts/source.sh; break;;
-        6 ) bash scripts/source.sh; break;;
+        1 ) bash scripts/build_by_quick.sh; break;;
+        2 ) bash scripts/build_by_source.sh; break;;
 
         8 ) bash scripts/sign.sh; exit;;
         9 ) bash scripts/dependency.sh; break;;

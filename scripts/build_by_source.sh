@@ -12,7 +12,7 @@ set -e
 
 ######################## setting env ########################
 # common
-project="lean-openwrt"
+project="awesome-openwrt"
 # 1 小米路由器青春版, 2 Newifi3, 3 软路由
 device_type=3
 

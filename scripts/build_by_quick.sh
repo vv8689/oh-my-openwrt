@@ -10,17 +10,67 @@ WARNING="\033[33m * Warning: $NORM"
 # if error occured, then exit
 set -e
 
-# common
-version="19.07.2"
-gcc_version="7.5.0"
-device="xiaomi"
-cpu1="ramips"
-cpu2="mt76x8"
-cpu_arch="mipsel_24kc"
-imagebuilder_url="http://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
-sdk_url="https://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
-device_profile="miwifi-nano"
-bin_ext=".bin"
+# info
+# device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
+echo "        当前支持以下路由器设备"
+echo "        1. 小米路由器青春版"
+echo "        2. Newifi3"
+echo "        3. 软路由"
+echo
+echo "        0. 取消"
+
+while true; do
+    echo -n -e "$INPUT"
+    read -p "请选择路由器设备类型: " yn
+    echo
+    case $yn in
+        1 ) device_type=1; break;;
+        2 ) device_type=2; break;;
+        3 ) device_type=3; break;;
+        0  | "") echo -e "$INFO End!"; exit;;
+        * ) echo "输入 0-9 以确认";;
+    esac
+done
+
+gen_device_desc(){
+    version="19.07.2"
+    gcc_version="7.5.0"
+    bin_ext=".bin"
+
+    if [ $device_type -eq 1 ]; then
+        device="xiaomi"
+        cpu1="ramips"
+        cpu2="mt76x8"
+        cpu_arch="mipsel_24kc"
+        device_profile="miwifi-nano"
+    elif [ $device_type -eq 2 ]; then
+        device="newifi3"
+        cpu1="ramips"
+        cpu2="mt7621"
+        cpu_arch="mipsel_24kc"
+        device_profile=""
+    elif [ $device_type -eq 3 ]; then
+        device="x86_64"
+        cpu1="x86"
+        cpu2="64"
+        cpu_arch="x86_64"
+        device_profile="x86"
+    else
+        echo -e "$INFO End!"
+        exit
+    fi
+
+    device="xiaomi"
+    cpu1="ramips"
+    cpu2="mt76x8"
+    cpu_arch="mipsel_24kc"
+    device_profile="miwifi-nano"
+    
+    imagebuilder_url="http://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
+    sdk_url="https://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
+}
+
+gen_device_desc
 
 # prepare
 if [ ! -d build ]; then
@@ -171,8 +221,11 @@ default_config(){
 do_menuconfig(){
     make menuconfig
     # make download -j8 V=s
+    # @https://p3terx.com/archives/openwrt-compilation-steps-and-commands.html
     # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
     # find dl -size -1024c -exec ls -l {} \;
+    # 删除小于 1k 的文件
+    # find dl -size -1024c -exec rm -f {} \;
 }
 edit_config(){
     cd $sdk_path
