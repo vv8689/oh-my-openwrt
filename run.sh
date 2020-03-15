@@ -10,7 +10,7 @@ WARNING="\033[33m * Warning: $NORM"
 # tips
 echo -e "$INFO Welcome to Awesome OpenWrt oh-my-openwrt!"
 echo
-echo "        1. 快速编译 Awesome OpenWrt"
+echo "        1. 快速编译 Awesome OpenWrt (by sdk and imagebuilder)"
 echo "        2. 源码编译 Awesome OpenWrt"
 echo
 echo "        8. 签名 ipks (此过程无需翻墙!)"

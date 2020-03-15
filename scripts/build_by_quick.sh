@@ -19,6 +19,7 @@ echo "        2. Newifi3"
 echo "        3. 软路由"
 echo
 echo "        0. 取消"
+echo
 
 while true; do
     echo -n -e "$INPUT"
@@ -49,7 +50,7 @@ gen_device_desc(){
         cpu1="ramips"
         cpu2="mt7621"
         cpu_arch="mipsel_24kc"
-        device_profile=""
+        device_profile="d-team_newifi-d2"
     elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu1="x86"
@@ -60,9 +61,16 @@ gen_device_desc(){
         echo -e "$INFO End!"
         exit
     fi
+
+    # OpenWrt 官方
+    # base_url="http://downloads.openwrt.org/releases"
+    # 清华大学镜像站
+    # base_url="https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases"
+    # 中科大镜像站
+    base_url="https://mirrors.ustc.edu.cn/lede/releases"
     
-    imagebuilder_url="http://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
-    sdk_url="https://downloads.openwrt.org/releases/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
+    imagebuilder_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
+    sdk_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
 }
 
 gen_device_desc
