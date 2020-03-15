@@ -2487,7 +2487,7 @@ CONFIG_STRACE_NONE=y
 # CONFIG_TARGET_PREINIT_SHOW_NETMSG is not set
 # CONFIG_TARGET_PREINIT_SUPPRESS_FAILSAFE_NETMSG is not set
 CONFIG_FEED_base=y
-CONFIG_FEED_stuart=y
+CONFIG_FEED_awesome=y
 
 #
 # Base system
@@ -5515,6 +5515,10 @@ CONFIG_PACKAGE_luci-app-bmx7=m
 CONFIG_PACKAGE_luci-app-cjdns=m
 CONFIG_PACKAGE_luci-app-clamav=m
 CONFIG_PACKAGE_luci-app-commands=m
+CONFIG_PACKAGE_luci-app-control-mia=m
+CONFIG_PACKAGE_luci-app-control-timewol=m
+CONFIG_PACKAGE_luci-app-control-webrestriction=m
+CONFIG_PACKAGE_luci-app-control-weburl=m
 CONFIG_PACKAGE_luci-app-cshark=m
 CONFIG_PACKAGE_luci-app-dcwapd=m
 CONFIG_PACKAGE_luci-app-ddns=m
@@ -5531,7 +5535,6 @@ CONFIG_PACKAGE_luci-app-https-dns-proxy=m
 CONFIG_PACKAGE_luci-app-ipsec-vpnd=m
 CONFIG_PACKAGE_luci-app-ksmbd=m
 CONFIG_PACKAGE_luci-app-lxc=m
-CONFIG_PACKAGE_luci-app-mia=m
 CONFIG_PACKAGE_luci-app-minidlna=m
 CONFIG_PACKAGE_luci-app-mjpg-streamer=m
 CONFIG_PACKAGE_luci-app-mosquitto=m
@@ -5549,26 +5552,40 @@ CONFIG_PACKAGE_luci-app-olsr-viz=m
 CONFIG_PACKAGE_luci-app-openvpn=m
 CONFIG_PACKAGE_luci-app-p910nd=m
 CONFIG_PACKAGE_luci-app-pagekitec=m
+CONFIG_PACKAGE_luci-app-passwall=m
+
+#
+# Configuration
+#
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ipt2socks=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR is not set
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_socks=y
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_socks is not set
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook is not set
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_kcptun is not set
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_haproxy=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_pdnsd=y
+CONFIG_PACKAGE_luci-app-passwall_INCLUDE_dns2socks=y
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin is not set
+# CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs is not set
 CONFIG_PACKAGE_luci-app-passwall-mini=m
 
 #
 # Configuration
 #
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_ipt2socks=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_Shadowsocks=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_ShadowsocksR=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_Shadowsocks_socks=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_ShadowsocksR_socks=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_V2ray=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_Trojan=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_Brook=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_kcptun=y
+CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_ipt2socks=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_haproxy=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_ChinaDNS_NG=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_pdnsd=y
 CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_dns2socks=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_v2ray-plugin=y
-CONFIG_PACKAGE_luci-app-passwall-mini_INCLUDE_simple-obfs=y
 CONFIG_PACKAGE_luci-app-polipo=m
 CONFIG_PACKAGE_luci-app-privoxy=m
 CONFIG_PACKAGE_luci-app-qos=m
@@ -5597,9 +5614,13 @@ CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
 CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_DNS2SOCKS=y
+CONFIG_PACKAGE_luci-app-ssr-plus-mini=m
+CONFIG_PACKAGE_luci-app-ssr-plus-mini_INCLUDE_Shadowsocks=y
+CONFIG_PACKAGE_luci-app-ssr-plus-mini_INCLUDE_V2ray=y
+CONFIG_PACKAGE_luci-app-ssr-plus-mini_INCLUDE_Trojan=y
+CONFIG_PACKAGE_luci-app-ssr-plus-mini_INCLUDE_DNS2SOCKS=y
 CONFIG_PACKAGE_luci-app-statistics=m
-CONFIG_PACKAGE_luci-app-stuart=m
-CONFIG_PACKAGE_luci-app-timewol=m
+CONFIG_PACKAGE_luci-app-syncthing=m
 CONFIG_PACKAGE_luci-app-tinyproxy=m
 CONFIG_PACKAGE_luci-app-transmission=m
 CONFIG_PACKAGE_luci-app-travelmate=m
@@ -5615,8 +5636,6 @@ CONFIG_PACKAGE_luci-app-vpn-policy-routing=m
 CONFIG_PACKAGE_luci-app-vpnbypass=m
 CONFIG_PACKAGE_luci-app-watchcat=m
 CONFIG_PACKAGE_luci-app-webadmin=m
-CONFIG_PACKAGE_luci-app-webrestriction=m
-CONFIG_PACKAGE_luci-app-weburl=m
 CONFIG_PACKAGE_luci-app-wifischedule=m
 CONFIG_PACKAGE_luci-app-wireguard=m
 CONFIG_PACKAGE_luci-app-wol=m
@@ -7252,6 +7271,7 @@ CONFIG_PACKAGE_luci-i18n-statistics-uk=m
 CONFIG_PACKAGE_luci-i18n-statistics-vi=m
 CONFIG_PACKAGE_luci-i18n-statistics-zh-cn=m
 CONFIG_PACKAGE_luci-i18n-statistics-zh-tw=m
+CONFIG_PACKAGE_luci-i18n-syncthing-zh-cn=m
 CONFIG_PACKAGE_luci-i18n-tinyproxy-bg=m
 CONFIG_PACKAGE_luci-i18n-tinyproxy-ca=m
 CONFIG_PACKAGE_luci-i18n-tinyproxy-cs=m
@@ -11598,4 +11618,3 @@ CONFIG_PACKAGE_yunbridge=m
 # font-utils
 #
 CONFIG_PACKAGE_fontconfig=m
-CONFIG_OVERRIDE_PKGS="linux toolchain"
