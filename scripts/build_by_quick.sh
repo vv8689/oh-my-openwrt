@@ -12,7 +12,8 @@ set -e
 
 # info
 # device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
-echo "        当前支持以下路由器设备"
+echo -e "$INFO Awesome OpenWrt 当前支持以下路由器设备:"
+echo
 echo "        1. 小米路由器青春版"
 echo "        2. Newifi3"
 echo "        3. 软路由"
