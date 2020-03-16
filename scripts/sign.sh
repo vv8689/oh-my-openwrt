@@ -63,61 +63,42 @@ cd build
 
 # path
 root_path=`pwd`
-code_path="$root_path/openwrt"
+signtool_path="$root_path/signtool"
 artifact_root_path="$root_path/artifacts/$version"
 artifact_bin_path="$artifact_root_path/targets/$device"
 artifact_ipk_path="$artifact_root_path/packages"
 
-# prepare
-if [ ! -d openwrt ]; then
-    mkdir -p openwrt
-fi
-cd $code_path
-
-######################## clone awesome-openwrt code ########################
-# awesome-openwrt code
-do_update_code(){
-    echo "update code..."
-    cd $code_path
-    git pull
-    echo -e "$INFO code update done!"
-}
-do_clone_code(){
-    echo "clone code..."
+######################## set env ########################
+pre_signtool(){
     cd $root_path
-    rm -rf $code_path
-    # 精简 clone
-    git clone --depth 10 -b develop --single-branch https://github.com/awesome-openwrt/openwrt.git $code_path
-    echo -e "$INFO code clone done!"
-}
-clone_or_update_code(){
-    if [ ! -d $code_path ]; then
-        mkdir -p $code_path
-    fi
-    result=`ls $code_path`
-    if [ -z "$result" ]; then
-        do_clone_code
+    if [ -d $signtool_path ]; then
+        echo -e "$INFO signtool already set done!"
     else
-        do_update_code
+        echo "set signtool..."
+        wget -O sdk.tar.xz -t 5 -T 60 https://mirrors.ustc.edu.cn/lede/releases/19.07.2/targets/ramips/mt76x8/openwrt-sdk-19.07.2-ramips-mt76x8_gcc-7.5.0_musl.Linux-x86_64.tar.xz
+        echo "download signtool done."
+        echo "extract signtool..."
+        tar -xvf sdk.tar.xz 1>/dev/null 2>&1
+        mv openwrt-sdk-$version-* sdk
+        rm -rf sdk.tar.xz
+        echo -e "$INFO set signtool done."
     fi
 }
-
-clone_or_update_code
+pre_signtool
 
 ######################## feeds update and install ########################
 # prepare feeds (update and install)
 do_pre_feeds(){
     echo "update/install feeds..."
-    cd $code_path
-    # rm -rf feeds/awesome*
+    cd $signtool_path
     ./scripts/feeds update -a && ./scripts/feeds install -a
     # ./scripts/feeds update awesome && ./scripts/feeds install -a -p awesome
     echo -e "$INFO update/install feeds done!"
 }
 pre_feeds(){
-    cd $code_path
+    cd $signtool_path
     if [ -d staging_dir/host/bin  ]; then
-        result=`ls staging_dir/host/bin`
+        result=`find staging_dir/host/bin -name "usign"`
         if [ -z "$result" ]; then
             do_pre_feeds
             return
@@ -126,17 +107,6 @@ pre_feeds(){
         do_pre_feeds
         return
     fi
-    echo
-    while true; do
-        echo -n -e "$INPUT"
-        read -p "是否 安装/更新 feeds (y/n) ? " yn
-        echo
-        case $yn in
-            [Yy]* ) do_pre_feeds; break;;
-            [Nn]* | "" ) break;;
-            * ) echo "输入 y 或 n 以确认";;
-        esac
-    done
 }
 pre_feeds
 
@@ -147,40 +117,23 @@ fix_sys(){
         sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
     fi
 }
-# fix_sys
-
-# 修复 v2ray 依赖问题
-fix_v2ray_dep(){
-    if [ ! -e $code_path/staging_dir/host/bin/upx ]; then
-        result=`which upx`
-        if [ -n "$result" ]; then
-            ln -s $result $code_path/staging_dir/host/bin/upx
-        fi
-    fi
-    if [ ! -e $code_path/staging_dir/host/bin/upx-ucl ]; then
-        result=`which upx-ucl`
-        if [ -n "$result" ]; then
-            ln -s $result $code_path/staging_dir/host/bin/upx-ucl
-        fi
-    fi
-}
-fix_v2ray_dep
+fix_sys
 
 ######################## sign ########################
 do_sign(){
     tmp_dir=$1
     cd $tmp_dir
     rm -f Packages*
-    $code_path/scripts/ipkg-make-index.sh . 2>/dev/null > Packages.manifest
+    $signtool_path/scripts/ipkg-make-index.sh . 2>/dev/null > Packages.manifest
     grep -vE '^(Maintainer|LicenseFiles|Source|Require)' Packages.manifest > Packages
     gzip -9nc Packages > Packages.gz
-    $code_path/staging_dir/host/bin/usign -S -m Packages -s $root_path/openwrt-awesome.key
+    $signtool_path/staging_dir/host/bin/usign -S -m Packages -s $root_path/openwrt-awesome.key
 }
 sign_ipks(){
     echo "sign ipks begin..."
 
     tmp_env=$PATH
-    export PATH="$code_path/staging_dir/host/bin:$PATH"
+    export PATH="$signtool_path/staging_dir/host/bin:$PATH"
 
     if [ ! -d $1/luci ]; then
         mkdir -p $1/luci
@@ -214,7 +167,7 @@ sign_dir_ipks(){
 # gen key
 if [ ! -e $root_path/openwrt-awesome.key ]; then
     echo "openwrt-awesome.key gen..."
-    $code_path/staging_dir/host/bin/usign -G -p $root_path/openwrt-awesome.pub -s $root_path/openwrt-awesome.key
+    $signtool_path/staging_dir/host/bin/usign -G -p $root_path/openwrt-awesome.pub -s $root_path/openwrt-awesome.key
     echo -e "$INFO openwrt-awesome.key gen done!"
 fi
 
