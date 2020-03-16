@@ -37,23 +37,25 @@ done
 gen_device_desc(){
     version="19.07.2"
     gcc_version="7.5.0"
-    bin_ext=".bin"
 
     if [ $device_type -eq 1 ]; then
         device="xiaomi"
         cpu1="ramips"
         cpu2="mt76x8"
         cpu_arch="mipsel_24kc"
+        bin_ext=".bin"
     elif [ $device_type -eq 2 ]; then
         device="newifi3"
         cpu1="ramips"
         cpu2="mt7621"
         cpu_arch="mipsel_24kc"
+        bin_ext=".bin"
     elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu1="x86"
         cpu2="64"
         cpu_arch="x86_64"
+        bin_ext=".img.gz"
     else
         echo -e "$INFO End!"
         exit
@@ -199,6 +201,32 @@ pre_feeds(){
 }
 pre_feeds
 
+######################## fix ########################
+# 修复 Ubuntu 18.04 动态链接库缺失问题
+fix_sys(){
+    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
+        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
+    fi
+}
+# fix_sys
+
+# 修复 v2ray 依赖问题
+fix_v2ray_dep(){
+    if [ ! -e $code_path/staging_dir/host/bin/upx ]; then
+        result=`which upx`
+        if [ -n "$result" ]; then
+            ln -s $result $code_path/staging_dir/host/bin/upx
+        fi
+    fi
+    if [ ! -e $code_path/staging_dir/host/bin/upx-ucl ]; then
+        result=`which upx-ucl`
+        if [ -n "$result" ]; then
+            ln -s $result $code_path/staging_dir/host/bin/upx-ucl
+        fi
+    fi
+}
+fix_v2ray_dep
+
 ######################## pre build ########################
 # make menuconfig
 do_make_menuconfig(){
@@ -262,32 +290,6 @@ download_dep(){
 }
 download_dep
 
-######################## fix ########################
-# 修复 Ubuntu 18.04 动态链接库缺失问题
-fix_sys(){
-    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
-        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
-    fi
-}
-# fix_sys
-
-# 修复 v2ray 依赖问题
-fix_v2ray_dep(){
-    if [ ! -e $code_path/staging_dir/host/bin/upx ]; then
-        result=`which upx`
-        if [ -n "$result" ]; then
-            ln -s $result $code_path/staging_dir/host/bin/upx
-        fi
-    fi
-    if [ ! -e $code_path/staging_dir/host/bin/upx-ucl ]; then
-        result=`which upx-ucl`
-        if [ -n "$result" ]; then
-            ln -s $result $code_path/staging_dir/host/bin/upx-ucl
-        fi
-    fi
-}
-fix_v2ray_dep
-
 ######################## build ########################
 
 # build bin
@@ -295,7 +297,6 @@ do_build_bin(){
     echo "build $device bin begin..."
 
     cd $code_path
-    make download -j8 V=s
 
     # 首次编译推荐单线程编译，以防玄学问题
     # make j=1 V=s
@@ -338,7 +339,7 @@ archive_bins(){
     done
 }
 
-result=`ls $bin_path/*${bin_ext}`
+result=`ls $bin_path/openwrt-${version}*${bin_ext}`
 if [ -n "$result" ]; then
     archive_bins
 fi

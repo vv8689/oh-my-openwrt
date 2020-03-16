@@ -217,6 +217,32 @@ pre_feeds(){
 }
 pre_feeds
 
+######################## fix ########################
+# 修复 Ubuntu 18.04 动态链接库缺失问题
+fix_sys(){
+    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
+        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
+    fi
+}
+# fix_sys
+
+# 修复 v2ray 依赖问题
+fix_v2ray_dep(){
+    if [ ! -e $sdk_path/staging_dir/host/bin/upx ]; then
+        result=`which upx`
+        if [ -n "$result" ]; then
+            ln -s $result $sdk_path/staging_dir/host/bin/upx
+        fi
+    fi
+    if [ ! -e $sdk_path/staging_dir/host/bin/upx-ucl ]; then
+        result=`which upx-ucl`
+        if [ -n "$result" ]; then
+            ln -s $result $sdk_path/staging_dir/host/bin/upx-ucl
+        fi
+    fi
+}
+fix_v2ray_dep
+
 ######################## pre build ########################
 # make menuconfig
 do_make_menuconfig(){
@@ -279,32 +305,6 @@ download_dep(){
     done
 }
 download_dep
-
-######################## fix ########################
-# 修复 Ubuntu 18.04 动态链接库缺失问题
-fix_sys(){
-    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
-        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
-    fi
-}
-# fix_sys
-
-# 修复 v2ray 依赖问题
-fix_v2ray_dep(){
-    if [ ! -e $sdk_path/staging_dir/host/bin/upx ]; then
-        result=`which upx`
-        if [ -n "$result" ]; then
-            ln -s $result $sdk_path/staging_dir/host/bin/upx
-        fi
-    fi
-    if [ ! -e $sdk_path/staging_dir/host/bin/upx-ucl ]; then
-        result=`which upx-ucl`
-        if [ -n "$result" ]; then
-            ln -s $result $sdk_path/staging_dir/host/bin/upx-ucl
-        fi
-    fi
-}
-fix_v2ray_dep
 
 ######################## build ########################
 
@@ -482,7 +482,7 @@ archive_bins(){
         esac
     done
 }
-result=`ls $bin_path/*${bin_ext}`
+result=`ls $bin_path/openwrt-${version}*${bin_ext}`
 if [ -n "$result" ]; then
     archive_bins
 fi
