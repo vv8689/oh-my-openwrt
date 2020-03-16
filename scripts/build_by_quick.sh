@@ -436,7 +436,7 @@ build_bin(){
     done
 }
 
-result=`ls $artifact_ipk_path/base/$cpu_arch`
+result=`ls $artifact_ipk_path/luci/*.ipk`
 if [ -n "$result" ]; then
     build_type="factory"
     build_bin
@@ -444,7 +444,6 @@ fi
 
 # 归档 bins
 do_archive_bins(){
-    result=`ls $bin_path`
     cd $bin_path
     cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${bin_ext}
 }
@@ -460,7 +459,7 @@ archive_bins(){
         esac
     done
 }
-result=`ls $bin_path`
+result=`ls $bin_path/*${bin_ext}`
 if [ -n "$result" ]; then
     archive_bins
 fi

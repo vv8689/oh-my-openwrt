@@ -302,7 +302,6 @@ build_bin
 
 # 归档 bins
 do_archive_bins(){
-    result=`ls $bin_path`
     cd $bin_path
     cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${bin_ext}
 }
@@ -320,7 +319,7 @@ archive_bins(){
     done
 }
 
-result=`ls $bin_path`
+result=`ls $bin_path/*${bin_ext}`
 if [ -n "$result" ]; then
     archive_bins
 fi
