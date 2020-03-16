@@ -44,19 +44,16 @@ gen_device_desc(){
         cpu1="ramips"
         cpu2="mt76x8"
         cpu_arch="mipsel_24kc"
-        device_profile="miwifi-nano"
     elif [ $device_type -eq 2 ]; then
         device="newifi3"
         cpu1="ramips"
         cpu2="mt7621"
         cpu_arch="mipsel_24kc"
-        device_profile="d-team_newifi-d2"
     elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu1="x86"
         cpu2="64"
         cpu_arch="x86_64"
-        device_profile="x86"
     else
         echo -e "$INFO End!"
         exit
