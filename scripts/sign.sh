@@ -79,7 +79,7 @@ pre_signtool(){
         echo "download signtool done."
         echo "extract signtool..."
         tar -xvf sdk.tar.xz 1>/dev/null 2>&1
-        mv openwrt-sdk-$version-* sdk
+        mv openwrt-sdk-$version-* signtool
         rm -rf sdk.tar.xz
         echo -e "$INFO set signtool done."
     fi
