@@ -482,7 +482,7 @@ archive_bins(){
         esac
     done
 }
-result=`ls $bin_path/openwrt-${version}*${bin_ext}`
+result=`find $bin_path -name "openwrt-${version}*${bin_ext}"`
 if [ -n "$result" ]; then
     archive_bins
 fi
