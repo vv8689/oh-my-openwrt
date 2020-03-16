@@ -10,92 +10,121 @@ WARNING="\033[33m * Warning: $NORM"
 # if error occured, then exit
 set -e
 
-######################## setting env ########################
-# common
-project="awesome-openwrt"
-# 1 小米路由器青春版, 2 Newifi3, 3 软路由
-device_type=3
+# info
+# device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
+echo -e "$INFO Awesome OpenWrt 当前支持以下路由器设备:"
+echo
+echo "        1. 小米路由器青春版"
+echo "        2. Newifi3"
+echo "        3. 软路由"
+echo
+echo "        0. 取消"
+echo
+
+while true; do
+    echo -n -e "$INPUT"
+    read -p "请选择路由器设备类型: " yn
+    echo
+    case $yn in
+        1 ) device_type=1; break;;
+        2 ) device_type=2; break;;
+        3 ) device_type=3; break;;
+        0  | "") echo -e "$INFO End!"; exit;;
+        * ) echo "输入 0-9 以确认";;
+    esac
+done
 
 gen_device_desc(){
+    version="19.07.2"
+    gcc_version="7.5.0"
+    bin_ext=".bin"
+
     if [ $device_type -eq 1 ]; then
         device="xiaomi"
-        device_ipk_desc="mipsel_24kc"
-        device_bin_desc="ramips/mt76x8"
+        cpu1="ramips"
+        cpu2="mt76x8"
+        cpu_arch="mipsel_24kc"
+        device_profile="miwifi-nano"
     elif [ $device_type -eq 2 ]; then
         device="newifi3"
-        device_ipk_desc="newifi3"
-        device_bin_desc="ramips/newifi3"
+        cpu1="ramips"
+        cpu2="mt7621"
+        cpu_arch="mipsel_24kc"
+        device_profile="d-team_newifi-d2"
     elif [ $device_type -eq 3 ]; then
         device="x86_64"
-        device_ipk_desc="x86_64"
-        device_bin_desc="x86/x86_64"
+        cpu1="x86"
+        cpu2="64"
+        cpu_arch="x86_64"
+        device_profile="x86"
     else
         echo -e "$INFO End!"
         exit
     fi
 }
-while true; do
-    echo -n -e "$INPUT"
-    read -p "请选择路由器设备 ( 0/1/2/3 | 0 取消, 1 小米路由器青春版, 2 Newifi3, 3 软路由 ) : " yn
-    echo
-    case $yn in
-        1 ) device_type=1; gen_device_desc; break;;
-        2 ) device_type=2; gen_device_desc; break;;
-        3 ) device_type=3; gen_device_desc; break;;
-        0  | "") echo -e "$INFO End!"; exit;;
-        * ) echo "输入 1(小米), 2(Newifi3), 3(软路由) 或 0(取消) 以确认";;
-    esac
-done
+
+gen_device_desc
 
 # prepare
-if [ ! -d build_openwrt ]; then
-    mkdir -p build_openwrt
+if [ ! -d build ]; then
+    mkdir -p build
 fi
-cd build_openwrt
+script_root_path=`pwd`
+cd build
 
 # path
 root_path=`pwd`
-code_path="$root_path/$project"
-stuart_path="$root_path/stuart-openwrt"
-ipk_path="$code_path/bin/packages/$device_ipk_desc"
-bin_path="$code_path/bin/targets/$device_bin_desc"
-artifact_root_path="$root_path/artifacts/lean"
+device_path="$root_path/$device"
+code_path="$device_path/openwrt"
+ipk_path="$code_path/bin/packages/$cpu_arch"
+bin_path="$code_path/bin/targets/$cpu1/$cpu2"
+artifact_root_path="$root_path/artifacts/$version"
 artifact_bin_path="$artifact_root_path/targets/$device"
 artifact_ipk_path="$artifact_root_path/packages"
 
+# prepare
+if [ ! -d $device ]; then
+    mkdir -p $device
+fi
+cd $device_path
+
 ######################## set env ########################
-# dir for project and artifact
-pre_artifacts_dir(){
-    if [ ! -d $code_path ]; then
-        mkdir -p $code_path
-    fi
+# archive dir
+pre_archive_dir(){
+    ## dir bins
     if [ ! -d $bin_path ]; then
         mkdir -p $bin_path
     fi
-    if [ ! -d $ipk_path/stuart ]; then
-        mkdir -p $ipk_path/stuart
+    # 软链接，方便快速查看
+    if [ ! -L $device_path/bins ]; then
+        ln -s $bin_path $device_path/bins
     fi
-    if [ ! -d $artifact_root_path ]; then
-        mkdir -p $artifact_root_path
-    fi
+    # 归档构建产物
     if [ ! -d $artifact_bin_path ]; then
         mkdir -p $artifact_bin_path
     fi
+    ## dir ipks
+    if [ ! -d $ipk_path/awesome ]; then
+        mkdir -p $ipk_path/awesome
+    fi
+    # 软链接，方便快速查看
+    if [ ! -L $device_path/ipks ]; then
+        ln -s $ipk_path $device_path/ipks
+    fi
+    # 归档构建产物
     if [ ! -d $artifact_ipk_path ]; then
         mkdir -p $artifact_ipk_path
     fi
     if [ ! -d $artifact_ipk_path/luci ]; then
         mkdir -p $artifact_ipk_path/luci
     fi
-    if [ ! -d $artifact_ipk_path/base ]; then
-        mkdir -p $artifact_ipk_path/base
-        mkdir -p $artifact_ipk_path/base/$device
+    if [ ! -d $artifact_ipk_path/base/$cpu_arch ]; then
+        mkdir -p $artifact_ipk_path/base/$cpu_arch
     fi
-    echo -e "$INFO artifact dir set done!"
+    echo -e "$INFO archive dir already set done!"
 }
-pre_artifacts_dir
 
-######################## download app code from lean openwrt rep ########################
+# awesome-openwrt code
 do_update_code(){
     echo "update code..."
     cd $code_path
@@ -106,7 +135,8 @@ do_clone_code(){
     echo "clone code..."
     cd $root_path
     rm -rf $code_path
-    git clone https://github.com/coolsnowwolf/lede.git $project
+    # 精简 clone
+    git clone --depth 10 -b develop --single-branch https://github.com/awesome-openwrt/openwrt.git $code_path
     echo -e "$INFO code clone done!"
 }
 clone_or_update_code(){
@@ -123,162 +153,174 @@ clone_or_update_code(){
 
 clone_or_update_code
 
+pre_archive_dir
+
 ######################## feeds update and install ########################
-# 修复 18.04 动态链接库缺失问题
-fix_sys(){
-    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
-        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
+# add packages to feeds.conf
+add_packages2feeds(){
+    # import awesome code to sdk
+    if [ `grep -c "src-git awesome https://github.com/awesome-openwrt/openwrt-packages" $code_path/feeds.conf.default` -eq 0 ]; then
+        echo "add packages to feeds..."
+        echo "src-git awesome https://github.com/awesome-openwrt/openwrt-packages">>$code_path/feeds.conf.default
+        echo -e "$INFO add packages to feeds done!"
     fi
 }
-fix_sys
-# feeds download
-do_update_feeds(){
-    echo "download feeds begin..."
+add_packages2feeds
+
+# prepare feeds (update and install)
+do_pre_feeds(){
+    echo "update/install feeds..."
     cd $code_path
+    rm -rf feeds/awesome*
     ./scripts/feeds update -a && ./scripts/feeds install -a
-    echo -e "$INFO download feeds done!"
+    # ./scripts/feeds update awesome && ./scripts/feeds install -a -p awesome
+    echo -e "$INFO update/install feeds done!"
 }
-update_feeds(){
+pre_feeds(){
     cd $code_path
     if [ -d staging_dir/host/bin  ]; then
         result=`ls staging_dir/host/bin`
         if [ -z "$result" ]; then
-            do_update_feeds
+            do_pre_feeds
             return
         fi
     else
-        do_update_feeds
+        do_pre_feeds
         return
     fi
+    echo
     while true; do
         echo -n -e "$INPUT"
         read -p "是否 安装/更新 feeds (y/n) ? " yn
         echo
         case $yn in
-            [Yy]* ) do_update_feeds; break;;
+            [Yy]* ) do_pre_feeds; break;;
             [Nn]* | "" ) break;;
             * ) echo "输入 y 或 n 以确认";;
         esac
     done
 }
-update_feeds
+pre_feeds
 
-######################## build config ########################
+######################## build config (make menuconfig) ########################
 default_config(){
     cd $code_path
     if [ ! -e .config ]; then
-        if [ -d $stuart_path/devices_config ]; then
-            if [ $device_type -eq 1 ]; then
-                cp -f $stuart_path/devices_config/lean/xiaomi.config .config
-            elif [ $device_type -eq 2 ]; then
-                cp -f $stuart_path/devices_config/lean/newifi3.config .config
-            elif [ $device_type -eq 3 ]; then
-                cp -f $stuart_path/devices_config/lean/x86_64.config .config
-            fi
+        if [ -e $script_root_path/devices/$device/diffconfig ]; then
+            cp -f $script_root_path/devices/$device/diffconfig .config
+            make defconfig
         fi
     fi
 }
-choose_config(){
+do_menuconfig(){
+    cd $code_path
+    make menuconfig
+
+    # @https://p3terx.com/archives/openwrt-compilation-steps-and-commands.html
+    # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
+    result="find dl -size -1024c -exec ls -l {} \;"
+    if [ -n "$result" ]; then
+        # # 删除 dl 目录下小于 1k 的文件
+        find dl -size -1024c -exec rm -f {} \;
+        make download -j8 V=s
+    fi
+}
+edit_config(){
     cd $code_path
     while true; do
         echo -n -e "$INPUT"
         read -p "是否需要修改编译配置 (y/n) ? " yn
         echo
         case $yn in
-            [Yy]* ) make menuconfig; break;;
+            [Yy]* ) do_menuconfig; break;;
             [Nn]* | "" ) break;;
             * ) echo "输入 y 或 n 以确认";;
         esac
     done
 }
 default_config
-choose_config
+edit_config
 
-######################## build openwrt ########################
-archive_bin(){
+######################## fix ########################
+# 修复 18.04 动态链接库缺失问题
+fix_sys(){
+    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
+        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
+    fi
+}
+# fix_sys
+
+# 修复 v2ray 依赖问题
+fix_v2ray_dep(){
+    if [ ! -e $code_path/staging_dir/host/bin/upx ]; then
+        result=`which upx`
+        if [ -n "$result" ]; then
+            ln -s $result $code_path/staging_dir/host/bin/upx
+        fi
+    fi
+    if [ ! -e $code_path/staging_dir/host/bin/upx-ucl ]; then
+        result=`which upx-ucl`
+        if [ -n "$result" ]; then
+            ln -s $result $code_path/staging_dir/host/bin/upx-ucl
+        fi
+    fi
+}
+fix_v2ray_dep
+
+######################## build ########################
+
+# build bin
+do_build_bin(){
+    echo "build $device bin begin..."
+
+    cd $code_path
+    make download -j8 V=s
+
+    # 首次编译推荐单线程编译，以防玄学问题
+    # make j=1 V=s
+    # 自动获取 CPU 线程数，采用多线程编译，成功编译后再次编译且没有进行 make clean 操作时使用
+    make -j$(nproc) V=s
+
+    echo -e "$INFO build $device bin done!"
+}
+build_bin(){
+    while true; do
+        echo -n -e "$INPUT"
+        read -p "是否编译 Awesome OpenWrt 固件 (y/n) ? " yn
+        echo
+        case $yn in
+            [Yy]* ) do_build_bin; break;;
+            [Nn]* | "" ) break;;
+            * ) echo "输入 y 或 n 以确认";;
+        esac
+    done
+}
+
+build_bin
+
+# 归档 bins
+do_archive_bins(){
+    result=`ls $bin_path`
     cd $bin_path
-    cp -f openwrt-*-squashfs-sysupgrade.bin $artifact_bin_path
+    cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${bin_ext}
 }
-do_build_openwrt(){
-    echo "build begin..."
-    cd $code_path
-    make download
-    make V=s
-    echo -e "$INFO build done!"
-    
-    # 归档 bin
-    archive_bin
-}
-build_openwrt(){
+
+archive_bins(){
     while true; do
         echo -n -e "$INPUT"
-        read -p "是否开始编译 lean openwrt 固件 (y/n) ? " yn
+        read -p "是否归档固件 (y/n) ? " yn
         echo
         case $yn in
-            [Yy]* ) do_build_openwrt; break;;
-            [Nn]* | "" ) break;;
+            [Yy]* | "" ) do_archive_bins; break;;
+            [Nn]* ) break;;
             * ) echo "输入 y 或 n 以确认";;
         esac
     done
 }
-build_openwrt
 
-######################## build ipks ########################
-do_build_linux(){
-    echo "build linux begin..."
-    cd $code_path
-    # make menuconfig
-    make target/linux/compile V=s
-    echo -e "$INFO build linux done!"
-}
-build_linux(){
-    while true; do
-        echo -n -e "$INPUT"
-        read -p "是否开始编译 Linux 内核 (y/n) ? " yn
-        echo
-        case $yn in
-            [Yy]* ) do_build_linux; break;;
-            [Nn]* | "" ) break;;
-            * ) echo "输入 y 或 n 以确认";;
-        esac
-    done
-}
-build_linux
+result=`ls $bin_path`
+if [ -n "$result" ]; then
+    archive_bins
+fi
 
-archive_ssr_ipk(){
-    cd $ipk_path/base
-    cp -f luci-app-ssr-plus*_all.ipk $artifact_ipk_path/luci/
-    # dependency
-    sudo cp -f shadowsocksr-libev-*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f libopenssl*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f ipt2socks*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f microsocks*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f pdnsd-alt*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f simple-obfs*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f v2ray*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-    cp -f trojan*$device_ipk_desc.ipk $artifact_ipk_path/base/$device/
-}
-
-do_build_ssr_ipk(){
-    echo "build ssr begin..."
-    cd $code_path
-    # make menuconfig
-    make package/lean/luci-app-ssr-plus/compile V=s
-    echo -e "$INFO build ssr done!"
-
-    # 归档 ipks
-    archive_ssr_ipk
-}
-build_ssr_ipk(){
-    while true; do
-        echo -n -e "$INPUT"
-        read -p "是否开始编译 SSR 软件包 (y/n) ? " yn
-        echo
-        case $yn in
-            [Yy]* ) do_build_ssr_ipk; break;;
-            [Nn]* | "" ) break;;
-            * ) echo "输入 y 或 n 以确认";;
-        esac
-    done
-}
-build_ssr_ipk
+echo -e "$INFO End!"

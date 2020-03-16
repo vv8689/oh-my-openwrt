@@ -228,13 +228,17 @@ default_config(){
     fi
 }
 do_menuconfig(){
+    cd $sdk_path
     make menuconfig
-    # make download -j8 V=s
+
     # @https://p3terx.com/archives/openwrt-compilation-steps-and-commands.html
     # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
-    # find dl -size -1024c -exec ls -l {} \;
-    # 删除小于 1k 的文件
-    # find dl -size -1024c -exec rm -f {} \;
+    result="find dl -size -1024c -exec ls -l {} \;"
+    if [ -n "$result" ]; then
+        # # 删除 dl 目录下小于 1k 的文件
+        find dl -size -1024c -exec rm -f {} \;
+        make download -j8 V=s
+    fi
 }
 edit_config(){
     cd $sdk_path
@@ -252,7 +256,16 @@ edit_config(){
 default_config
 edit_config
 
-######################## fix dependency ########################
+######################## fix ########################
+# 修复 18.04 动态链接库缺失问题
+fix_sys(){
+    if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
+        sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
+    fi
+}
+# fix_sys
+
+# 修复 v2ray 依赖问题
 fix_v2ray_dep(){
     if [ ! -e $sdk_path/staging_dir/host/bin/upx ]; then
         result=`which upx`
