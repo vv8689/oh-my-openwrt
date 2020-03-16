@@ -203,8 +203,9 @@ pre_feeds
 default_config(){
     cd $code_path
     if [ ! -e .config ]; then
-        if [ -e $script_root_path/devices/$device/diffconfig ]; then
-            cp -f $script_root_path/devices/$device/diffconfig .config
+        diffconfig_file_path="$script_root_path/devices/$device/source-diffconfig.info"
+        if [ -e $diffconfig_file_path ]; then
+            cp -f $diffconfig_file_path .config
             make defconfig
         fi
     fi
