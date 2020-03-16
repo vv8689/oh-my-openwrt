@@ -168,7 +168,7 @@ add_packages2feeds
 do_pre_feeds(){
     echo "update/install feeds..."
     cd $code_path
-    rm -rf feeds/awesome*
+    # rm -rf feeds/awesome*
     ./scripts/feeds update -a && ./scripts/feeds install -a
     # ./scripts/feeds update awesome && ./scripts/feeds install -a -p awesome
     echo -e "$INFO update/install feeds done!"
