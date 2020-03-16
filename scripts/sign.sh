@@ -189,8 +189,8 @@ sign_ipks(){
         mkdir -p $1/base/$cpu_arch
     fi
 
-    gen_index "$1/luci"
-    gen_index "$1/base/$cpu_arch"
+    do_sign "$1/luci"
+    do_sign "$1/base/$cpu_arch"
 
     unset PATH
     export PATH="$tmp_env"
