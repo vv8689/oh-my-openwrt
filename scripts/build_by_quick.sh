@@ -159,7 +159,11 @@ pre_archive_dir(){
     # 归档构建产物
     if [ ! -d $artifact_ipk_path ]; then
         mkdir -p $artifact_ipk_path
+    fi
+    if [ ! -d $artifact_ipk_path/luci ]; then
         mkdir -p $artifact_ipk_path/luci
+    fi
+    if [ ! -d $artifact_ipk_path/base/$cpu_arch ]; then
         mkdir -p $artifact_ipk_path/base/$cpu_arch
     fi
     echo -e "$INFO archive dir already set done!"
