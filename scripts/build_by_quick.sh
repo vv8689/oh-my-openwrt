@@ -257,7 +257,7 @@ do_make_download(){
         # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
         result="find dl -size -1024c -exec ls -l {} \;"
         if [ -n "$result" ]; then
-            # # 删除 dl 目录下小于 1k 的文件
+            # 删除 dl 目录下小于 1k 的文件
             find dl -size -1024c -exec rm -f {} \;
             make download -j8 V=s
         fi
@@ -269,7 +269,7 @@ download_dep(){
     cd $sdk_path
     while true; do
         echo -n -e "$INPUT"
-        read -p "是否需要下载编译依赖 (y/n) ? " yn
+        read -p "是否下载编译依赖 (y/n) ? " yn
         echo
         case $yn in
             [Yy]* ) do_make_download; break;;
