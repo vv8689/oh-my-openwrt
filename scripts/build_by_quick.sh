@@ -203,6 +203,7 @@ pre_feeds(){
         do_pre_feeds
         return
     fi
+    echo
     while true; do
         echo -n -e "$INPUT"
         read -p "是否 安装/更新 feeds (y/n) ? " yn
