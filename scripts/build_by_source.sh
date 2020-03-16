@@ -199,7 +199,12 @@ pre_feeds(){
 }
 pre_feeds
 
-######################## build config (make menuconfig) ########################
+######################## pre build ########################
+# make menuconfig
+do_make_menuconfig(){
+    cd $code_path
+    make menuconfig
+}
 default_config(){
     cd $code_path
     if [ ! -e .config ]; then
@@ -210,10 +215,25 @@ default_config(){
         fi
     fi
 }
-do_menuconfig(){
+edit_config(){
     cd $code_path
-    make menuconfig
+    default_config
+    while true; do
+        echo -n -e "$INPUT"
+        read -p "是否需要修改编译配置 (y/n) ? " yn
+        echo
+        case $yn in
+            [Yy]* ) do_make_menuconfig; break;;
+            [Nn]* | "" ) break;;
+            * ) echo "输入 y 或 n 以确认";;
+        esac
+    done
+}
+edit_config
 
+# make download
+do_make_download(){
+    cd $code_path
     if [ -d dl ]; then
         # @https://p3terx.com/archives/openwrt-compilation-steps-and-commands.html
         # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
@@ -227,24 +247,23 @@ do_menuconfig(){
         make download -j8 V=s
     fi
 }
-edit_config(){
+download_dep(){
     cd $code_path
     while true; do
         echo -n -e "$INPUT"
-        read -p "是否需要修改编译配置 (y/n) ? " yn
+        read -p "是否需要下载编译依赖 (y/n) ? " yn
         echo
         case $yn in
-            [Yy]* ) do_menuconfig; break;;
+            [Yy]* ) do_make_download; break;;
             [Nn]* | "" ) break;;
             * ) echo "输入 y 或 n 以确认";;
         esac
     done
 }
-default_config
-edit_config
+download_dep
 
 ######################## fix ########################
-# 修复 18.04 动态链接库缺失问题
+# 修复 Ubuntu 18.04 动态链接库缺失问题
 fix_sys(){
     if [ ! -L /lib/ld-linux-x86-64.so.2 ]; then
         sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
