@@ -265,7 +265,7 @@ do_make_download(){
     if [ -d dl ]; then
         # @https://p3terx.com/archives/openwrt-compilation-steps-and-commands.html
         # 查找 dl 目录下文件是否下载正常，小于 1k 的文件，说明下载可能不完整
-        result="find dl -size -1024c -exec ls -l {} \;"
+        result=`find dl -size -1024c -exec ls -l {} \;`
         if [ -n "$result" ]; then
             # 删除 dl 目录下小于 1k 的文件
             find dl -size -1024c -exec rm -f {} \;
