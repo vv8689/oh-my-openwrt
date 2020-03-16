@@ -36,7 +36,6 @@ done
 
 gen_device_desc(){
     version="19.07.2"
-    gcc_version="7.5.0"
 
     if [ $device_type -eq 1 ]; then
         device="xiaomi"
