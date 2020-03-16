@@ -286,6 +286,8 @@ do_make_download(){
             # 删除 dl 目录下小于 1k 的文件
             find dl -size -1024c -exec rm -f {} \;
             make download -j8 V=s
+        else
+            echo "make download already done!"
         fi
     else
         make download -j8 V=s
