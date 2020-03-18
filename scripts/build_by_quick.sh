@@ -324,30 +324,46 @@ do_build_ipks(){
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
 
-    # make package/luci-app-usb-printer/compile V=s                    # luci USB 打印服务器
-
-    # make package/ddns-scripts_aliyun/compile V=s                     # aliyun ddns
-    # make package/vlmcsd/compile V=s                                  # KMS 服务器
-    # make package/luci-app-arpbind/compile V=s                        # luci 静态 ARP 绑定
-    # make package/luci-app-autoreboot/compile V=s                     # luci 定时重启
-    # make package/luci-app-fileassistant/compile V=s                  # luci 文件助手
-    # make package/luci-app-ipsec-vpnd/compile V=s                     # luci IPSec VPN
-    # make package/luci-app-mia/compile V=s                            # luci 上网时间控制
-    # make package/luci-app-ramfree/compile V=s                        # luci 释放内存
-    # make package/luci-app-timewol/compile V=s                        # luci 定时唤醒
-    # make package/luci-app-ttyd/compile V=s                           # luci 网页终端
-    # make package/luci-app-vlmcsd/compile V=s                         # luci KMS 服务器
-    # make package/luci-app-webadmin/compile V=s                       # luci Web 管理
-    # make package/luci-app-webrestriction/compile V=s                 # luci 访问控制
-    # make package/luci-app-weburl/compile V=s                         # luci 网址过滤
-    # make package/luci-app-xlnetacc/compile V=s                       # luci 迅雷快鸟
-    # make package/luci-i18n-sqm/compile V=s                           # sqm 语言包
-
-    ############## Test
-    # make package/v2ray/compile V=s
-    # make package/trojan/compile V=s
+    make package/luci-app-arpbind/compile V=s
+    make package/luci-app-control-mia/compile V=s
+    make package/luci-app-control-timewol/compile V=s
+    make package/luci-app-control-webrestriction/compile V=s
+    make package/luci-app-control-weburl/compile V=s
+    make package/luci-app-fileassistant/compile V=s
+    make package/luci-app-ipsec-vpnserver/compile V=s
+    make package/luci-app-passwall/compile V=s
     make package/luci-app-passwall-mini/compile V=s
+    make package/luci-app-pptp-vpnserver/compile V=s
+    make package/luci-app-ramfree/compile V=s
+    make package/luci-app-ssr-plus/compile V=s
     make package/luci-app-ssr-plus-mini/compile V=s
+    make package/luci-app-syncthing/compile V=s
+    make package/luci-app-ttyd/compile V=s
+    make package/trojan/compile V=s
+    make package/luci-app-usb-printer/compile V=s
+    make package/luci-app-vlmcsd/compile V=s
+    make package/luci-app-webadmin/compile V=s
+    make package/luci-app-xlnetacc/compile V=s
+    make package/luci-i18n-sqm/compile V=s
+
+    # make package/brook/compile V=s
+    # make package/chinadns-ng/compile V=s
+    # make package/ddns-scripts_aliyun/compile V=s
+    # make package/dns2socks/compile V=s
+    # make package/ipt2socks/compile V=s
+    # make package/kcptun/compile V=s
+    # make package/openssl1.1/compile V=s
+    # make package/microsocks/compile V=s
+    # make package/pdnsd-alt/compile V=s
+    # make package/redsocks2/compile V=s
+    # make package/shadowsocksr-libev/compile V=s
+    # make package/simple-obfs/compile V=s
+    # make package/syncthing/compile V=s
+    # make package/tcping/compile V=s
+    # make package/trojan/compile V=s
+    # make package/v2ray/compile V=s
+    # make package/v2ray-plugin/compile V=s
+    # make package/vlmcsd/compile V=s
 
     ################# end build for detail ######################
 
@@ -371,6 +387,10 @@ build_ipks
 do_archive_ipks(){
     cd $ipk_path/awesome
     cp -f *_all.ipk $artifact_ipk_path/luci
+    result=`find $artifact_ipk_path/luci -name "*_$cpu_arch.ipk"`
+    if [ -n "$result" ]; then
+        cp -f *_$cpu_arch.ipk $artifact_ipk_path/luci
+    fi
     cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
 }
 archive_ipks(){
