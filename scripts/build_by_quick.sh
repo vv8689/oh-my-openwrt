@@ -330,6 +330,7 @@ do_build_ipks(){
     make package/luci-app-control-webrestriction/compile V=s
     make package/luci-app-control-weburl/compile V=s
     make package/luci-app-fileassistant/compile V=s
+    make package/luci-app-flowoffload/compile V=s
     make package/luci-app-ipsec-vpnserver/compile V=s
     make package/luci-app-passwall/compile V=s
     make package/luci-app-passwall-mini/compile V=s
