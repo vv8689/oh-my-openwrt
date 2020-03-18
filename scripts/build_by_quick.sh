@@ -325,6 +325,7 @@ do_build_ipks(){
     # 查看自定义软件包 ./scripts/feeds list -r awesome
 
     make package/luci-app-arpbind/compile V=s
+    make package/luci-app-autoreboot/compile V=s
     make package/luci-app-control-mia/compile V=s
     make package/luci-app-control-timewol/compile V=s
     make package/luci-app-control-webrestriction/compile V=s
@@ -424,7 +425,8 @@ do_build_bin(){
     cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
     rm -rf $imagebuilder_path/packages/awesome/Packages*
 
-    # fix
+    # fix Imagebuilder: "opkg_install_pkg: Package size mismatch" error
+    # @https://bugs.openwrt.org/index.php?do=details&task_id=2690&status%5B0%5D=
     for f in dl/openwrt_*; do
         zcat $f | sed -ne '/^Filename:/s/.* //p' -e '/^SHA256sum:/s/.* //p' | while read file; do
             read sum
