@@ -361,7 +361,6 @@ do_build_ipks(){
     # make package/dns2socks/compile V=s
     # make package/ipt2socks/compile V=s
     # make package/kcptun/compile V=s
-    # make package/openssl1.1/compile V=s
     # make package/microsocks/compile V=s
     # make package/pdnsd-alt/compile V=s
     # make package/redsocks2/compile V=s
