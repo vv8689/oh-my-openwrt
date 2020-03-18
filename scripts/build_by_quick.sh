@@ -67,7 +67,9 @@ gen_device_desc(){
     # 清华大学镜像站
     # base_url="https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases"
     # 中科大镜像站
-    base_url="https://mirrors.ustc.edu.cn/lede/releases"
+    # base_url="https://mirrors.ustc.edu.cn/lede/releases"
+    # 教育网高速镜像站
+    base_url="https://openwrt.proxy.ustclug.org/releases"
     
     imagebuilder_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
     sdk_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
@@ -414,12 +416,12 @@ if [ -n "$result" ]; then
 fi
 
 # build img
-# 替换官方仓库地址为中科大镜像源
+# 替换官方仓库地址为教育网高速镜像源
 # 仅作为测试使用
 replace_repo_url(){
     cd $imagebuilder_path
-    org_url="http:\/\/downloads.openwrt.org"
-    mirror_url="https:\/\/mirrors.ustc.edu.cn\/lede"
+    org_url="downloads.openwrt.org"
+    mirror_url="openwrt.proxy.ustclug.org"
     if [ ! -e repositories.conf ]; then
         return
     fi
@@ -462,7 +464,7 @@ do_build_bin(){
 
     # 查看固件已安装软件包 echo $(opkg list_installed | awk '{ print $1 }')
     org_original_pkgs="base-files busybox cgi-io dnsmasq dropbear firewall fstools fwtool getrandom hostapd-common ip6tables iptables iw iwinfo jshn jsonfilter kernel kmod-cfg80211 kmod-gpio-button-hotplug kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-nat kmod-ipt-offload kmod-leds-gpio kmod-lib-crc-ccitt kmod-mac80211 kmod-mt76-core kmod-mt7603 kmod-nf-conntrack kmod-nf-conntrack6 kmod-nf-flow kmod-nf-ipt kmod-nf-ipt6 kmod-nf-nat kmod-nf-reject kmod-nf-reject6 kmod-nls-base kmod-ppp kmod-pppoe kmod-pppox kmod-slhc kmod-usb-core kmod-usb-ehci kmod-usb-ledtrig-usbport kmod-usb-ohci kmod-usb2 libblobmsg-json libc libgcc1 libip4tc2 libip6tc2 libiwinfo-lua libiwinfo20181126 libjson-c2 libjson-script liblua5.1.5 liblucihttp-lua liblucihttp0 libnl-tiny libpthread libubox20191228 libubus-lua libubus20191227 libuci20130104 libuclient20160123 libxtables12 logd lua luci luci-app-firewall luci-app-opkg luci-base luci-lib-ip luci-lib-jsonc luci-lib-nixio luci-mod-admin-full luci-mod-network luci-mod-status luci-mod-system luci-proto-ipv6 luci-proto-ppp luci-theme-bootstrap mtd netifd odhcp6c odhcpd-ipv6only openwrt-keyring opkg ppp ppp-mod-pppoe procd rpcd rpcd-mod-file rpcd-mod-iwinfo rpcd-mod-luci rpcd-mod-rrdns swconfig ubox ubus ubusd uci uclient-fetch uhttpd urandom-seed urngd usign wireless-regdb wpad-basic"
-    org_custom_pkgs="luci-i18n-base-zh-cn -kmod-usb-core -kmod-usb2 -kmod-usb-ohci -kmod-usb-ledtrig-usbport luci-i18n-firewall-zh-cn libustream-mbedtls ca-bundle ca-certificates wget curl vsftpd openssh-sftp-server -dnsmasq dnsmasq-full"
+    org_custom_pkgs="luci-i18n-base-zh-cn -kmod-usb-core -kmod-usb2 -kmod-usb-ohci -kmod-usb-ledtrig-usbport luci-i18n-firewall-zh-cn libustream-mbedtls ca-bundle ca-certificates libopenssl1.1 wget curl vsftpd openssh-sftp-server -dnsmasq dnsmasq-full"
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
     ## factory
