@@ -415,6 +415,7 @@ fi
 
 # build img
 # 替换官方仓库地址为中科大镜像源
+# 仅作为测试使用
 replace_repo_url(){
     cd $imagebuilder_path
     org_url="http:\/\/downloads.openwrt.org"
@@ -426,7 +427,6 @@ replace_repo_url(){
         sed -i "s/$org_url/$mirror_url/g" repositories.conf
     fi
 }
-replace_repo_url
 
 do_build_bin(){
     echo "build $build_type bin begin..."
@@ -443,6 +443,8 @@ do_build_bin(){
     cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
     cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
     rm -rf $imagebuilder_path/packages/awesome/Packages*
+
+    # replace_repo_url
 
     # fix Imagebuilder: "opkg_install_pkg: Package size mismatch" error
     # @https://bugs.openwrt.org/index.php?do=details&task_id=2690&status%5B0%5D=
