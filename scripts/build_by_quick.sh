@@ -332,28 +332,28 @@ do_build_ipks(){
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
 
-    make package/luci-app-arpbind/compile V=s
-    make package/luci-app-autoreboot/compile V=s
-    make package/luci-app-control-mia/compile V=s
-    make package/luci-app-control-timewol/compile V=s
-    make package/luci-app-control-webrestriction/compile V=s
-    make package/luci-app-control-weburl/compile V=s
-    make package/luci-app-fileassistant/compile V=s
-    make package/luci-app-flowoffload/compile V=s
-    make package/luci-app-ipsec-vpnserver/compile V=s
-    make package/luci-app-passwall/compile V=s
-    make package/luci-app-passwall-mini/compile V=s
-    make package/luci-app-pptp-vpnserver/compile V=s
-    make package/luci-app-ramfree/compile V=s
-    make package/luci-app-ssr-plus/compile V=s
-    make package/luci-app-ssr-plus-mini/compile V=s
-    make package/luci-app-syncthing/compile V=s
-    make package/trojan/compile V=s
-    make package/luci-app-usb-printer/compile V=s
-    make package/luci-app-vlmcsd/compile V=s
-    make package/luci-app-webadmin/compile V=s
-    make package/luci-app-xlnetacc/compile V=s
-    make package/luci-i18n-sqm/compile V=s
+    # make package/luci-app-arpbind/compile V=s
+    # make package/luci-app-autoreboot/compile V=s
+    # make package/luci-app-control-mia/compile V=s
+    # make package/luci-app-control-timewol/compile V=s
+    # make package/luci-app-control-webrestriction/compile V=s
+    # make package/luci-app-control-weburl/compile V=s
+    # make package/luci-app-fileassistant/compile V=s
+    # make package/luci-app-flowoffload/compile V=s
+    # make package/luci-app-ipsec-vpnserver/compile V=s
+    # make package/luci-app-passwall/compile V=s
+    # make package/luci-app-passwall-mini/compile V=s
+    # make package/luci-app-pptp-vpnserver/compile V=s
+    # make package/luci-app-ramfree/compile V=s
+    # make package/luci-app-ssr-plus/compile V=s
+    # make package/luci-app-ssr-plus-mini/compile V=s
+    # make package/luci-app-syncthing/compile V=s
+    # make package/trojan/compile V=s
+    # make package/luci-app-usb-printer/compile V=s
+    # make package/luci-app-vlmcsd/compile V=s
+    # make package/luci-app-webadmin/compile V=s
+    # make package/luci-app-xlnetacc/compile V=s
+    # make package/luci-i18n-sqm/compile V=s
 
     # make package/brook/compile V=s
     # make package/chinadns-ng/compile V=s
@@ -372,6 +372,10 @@ do_build_ipks(){
     # make package/v2ray/compile V=s
     # make package/v2ray-plugin/compile V=s
     # make package/vlmcsd/compile V=s
+
+
+    ############## test
+    make package/luci-app-ssr-plus-mini/compile V=s
 
     ################# end build for detail ######################
 
@@ -469,7 +473,7 @@ do_build_bin(){
     ## factory
     awesome_factory_pkgs="luci-compat luci-app-ramfree luci-app-autoreboot luci-i18n-autoreboot-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
     ## sysupgrade
-    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn"
+    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn trojan luci-app-ssr-plus-mini"
 
     if [ $build_type == "factory" ]; then
         image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
