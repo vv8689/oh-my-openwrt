@@ -450,7 +450,7 @@ do_build_bin(){
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
     ## factory
-    awesome_factory_pkgs="luci-compat luci-app-ramfree luci-app-fileassistant luci-app-autoreboot luci-i18n-autoreboot-zh-cn ttyd luci-app-ttyd luci-i18n-ttyd-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
+    awesome_factory_pkgs="luci-compat luci-app-ramfree luci-app-fileassistant luci-app-autoreboot luci-i18n-autoreboot-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
     ## sysupgrade
     awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn"
 
