@@ -275,6 +275,12 @@ edit_config(){
 }
 edit_config
 
+update_diffconfig(){
+    cd $sdk_path
+    ./scripts/diffconfig.sh >diffconfig
+}
+update_diffconfig
+
 # make download
 do_make_download(){
     cd $sdk_path
