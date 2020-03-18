@@ -346,7 +346,6 @@ do_build_ipks(){
     make package/luci-app-ssr-plus/compile V=s
     make package/luci-app-ssr-plus-mini/compile V=s
     make package/luci-app-syncthing/compile V=s
-    make package/luci-app-ttyd/compile V=s
     make package/trojan/compile V=s
     make package/luci-app-usb-printer/compile V=s
     make package/luci-app-vlmcsd/compile V=s
