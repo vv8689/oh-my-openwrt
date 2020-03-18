@@ -171,17 +171,6 @@ pre_archive_dir(){
 pre_archive_dir
 
 ######################## feeds update and install ########################
-# 替换官方仓库地址为中科大镜像源
-replace_repo_url(){
-    cd $sdk_path
-    org_url="http://downloads.openwrt.org"
-    mirror_url="https://mirrors.ustc.edu.cn/lede"
-    if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
-        sed -i "s/$org_url/$mirror_url/g" repositories.conf
-    fi
-}
-replace_repo_url
-
 # add packages to feeds.conf
 add_packages2feeds(){
     # import awesome code to sdk
@@ -425,6 +414,20 @@ if [ -n "$result" ]; then
 fi
 
 # build img
+# 替换官方仓库地址为中科大镜像源
+replace_repo_url(){
+    cd $imagebuilder_path
+    org_url="http://downloads.openwrt.org"
+    mirror_url="https://mirrors.ustc.edu.cn/lede"
+    if [ ! -e repositories.conf ]; then
+        return
+    fi
+    if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
+        sed -i "s/$org_url/$mirror_url/g" repositories.conf
+    fi
+}
+replace_repo_url
+
 do_build_bin(){
     echo "build $build_type bin begin..."
 
