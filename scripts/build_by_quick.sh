@@ -430,9 +430,9 @@ do_build_bin(){
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
     ## factory
-    awesome_factory_pkgs="luci-app-ramfree luci-app-fileassistant luci-app-arpbind luci-i18n-arpbind-zh-cn luci-app-autoreboot luci-i18n-autoreboot-zh-cn ttyd luci-app-ttyd luci-i18n-ttyd-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
+    awesome_factory_pkgs="luci-app-ramfree luci-app-fileassistant luci-app-autoreboot luci-i18n-autoreboot-zh-cn ttyd luci-app-ttyd luci-i18n-ttyd-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
     ## sysupgrade
-    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn luci-app-ipsec-vpnd luci-i18n-ipsec-vpnd-zh-cn sqm-scripts luci-app-sqm"
+    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn"
 
     if [ $build_type == "factory" ]; then
         image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
