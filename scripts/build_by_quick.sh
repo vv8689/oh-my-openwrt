@@ -473,7 +473,7 @@ do_build_bin(){
     ## factory
     awesome_factory_pkgs="luci-compat luci-app-ramfree luci-app-autoreboot luci-i18n-autoreboot-zh-cn luci-app-webadmin luci-i18n-webadmin-zh-cn"
     ## sysupgrade
-    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn trojan luci-app-ssr-plus-mini"
+    awesome_sysupgrade_pkgs="$awesome_factory_pkgs vlmcsd luci-app-vlmcsd luci-i18n-vlmcsd-zh-cn"
 
     if [ $build_type == "factory" ]; then
         image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
