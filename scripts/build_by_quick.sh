@@ -417,8 +417,8 @@ fi
 # 替换官方仓库地址为中科大镜像源
 replace_repo_url(){
     cd $imagebuilder_path
-    org_url="http://downloads.openwrt.org"
-    mirror_url="https://mirrors.ustc.edu.cn/lede"
+    org_url="http:\/\/downloads.openwrt.org"
+    mirror_url="https:\/\/mirrors.ustc.edu.cn\/lede"
     if [ ! -e repositories.conf ]; then
         return
     fi
