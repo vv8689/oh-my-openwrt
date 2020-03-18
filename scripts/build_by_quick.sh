@@ -244,10 +244,16 @@ fix_v2ray_dep(){
 fix_v2ray_dep
 
 ######################## pre build ########################
+# gen diffconfig
+update_diffconfig(){
+    cd $sdk_path
+    ./scripts/diffconfig.sh >diffconfig 1>/dev/null 2>&1
+}
 # make menuconfig
 do_make_menuconfig(){
     cd $sdk_path
     make menuconfig
+    update_diffconfig
 }
 default_config(){
     cd $sdk_path
@@ -274,12 +280,6 @@ edit_config(){
     done
 }
 edit_config
-
-update_diffconfig(){
-    cd $sdk_path
-    ./scripts/diffconfig.sh >diffconfig 1>/dev/null 2>&1
-}
-update_diffconfig
 
 # make download
 do_make_download(){
