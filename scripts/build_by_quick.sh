@@ -57,6 +57,7 @@ gen_device_desc(){
         cpu2="64"
         cpu_arch="x86_64"
         device_profile="Generic"
+        bin_ext=".img.gz"
     else
         echo -e "$INFO End!"
         exit
