@@ -398,7 +398,10 @@ build_ipks
 # 归档 ipks
 do_archive_ipks(){
     cd $ipk_path/awesome
-    cp -f *_all.ipk $artifact_ipk_path/luci
+    result=`ls | grep 'all.ipk'`
+    if [ -n "$result" ]; then
+        cp -f *_all.ipk $artifact_ipk_path/luci
+    fi
     result=`ls | grep "$cpu_arch.ipk"`
     if [ -n "$result" ]; then
         cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
@@ -416,10 +419,7 @@ archive_ipks(){
         esac
     done
 }
-result=`ls $ipk_path/awesome | grep '.ipk'`
-if [ -n "$result" ]; then
-    archive_ipks
-fi
+archive_ipks
 
 # build img
 # 替换官方仓库地址为教育网高速镜像源
