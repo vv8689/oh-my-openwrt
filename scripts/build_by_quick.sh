@@ -398,12 +398,12 @@ build_ipks
 # 归档 ipks
 do_archive_ipks(){
     cd $ipk_path/awesome
-    result=`ls | grep 'all.ipk'`
+    local result=`ls | grep 'all.ipk'`
     if [ -n "$result" ]; then
         cp -f *_all.ipk $artifact_ipk_path/luci
     fi
-    result=`ls | grep "$cpu_arch.ipk"`
-    if [ -n "$result" ]; then
+    local result2=`ls | grep "$cpu_arch.ipk"`
+    if [ -n "$result2" ]; then
         cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
     fi
 }
