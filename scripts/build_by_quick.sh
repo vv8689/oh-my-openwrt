@@ -532,7 +532,6 @@ build_bin(){
 
 result=`ls $artifact_ipk_path/luci | grep '.ipk'`
 if [ -n "$result" ]; then
-    build_type="factory"
     build_bin
 fi
 
