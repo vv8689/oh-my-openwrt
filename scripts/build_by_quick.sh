@@ -56,7 +56,7 @@ gen_device_desc(){
         cpu1="x86"
         cpu2="64"
         cpu_arch="x86_64"
-        device_profile="x86"
+        device_profile="Generic"
     else
         echo -e "$INFO End!"
         exit
