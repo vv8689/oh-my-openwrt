@@ -250,7 +250,7 @@ fix_v2ray_dep
 # gen diffconfig
 update_diffconfig(){
     cd $sdk_path
-    ./scripts/diffconfig.sh >.config.diff 1>/dev/null 2>&1
+    ./scripts/diffconfig.sh >.config.diff
 }
 # make menuconfig
 do_make_menuconfig(){
