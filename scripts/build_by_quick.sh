@@ -547,7 +547,10 @@ build_bin
 # 归档 bins
 do_archive_bins(){
     cd $bin_path
-    cp -f openwrt-${version}*${bin_ext} $artifact_bin_path
+    result=`find . -name "openwrt-${version}*combined-squashfs${bin_ext}"`
+    if [ -n "$result" ]; then
+        cp -f openwrt-${version}*combined-squashfs${bin_ext} $artifact_bin_path
+    fi
 }
 archive_bins(){
     while true; do
@@ -561,9 +564,6 @@ archive_bins(){
         esac
     done
 }
-result=`find $bin_path -name "openwrt-${version}*${bin_ext}"`
-if [ -n "$result" ]; then
-    archive_bins
-fi
+archive_bins
 
 echo -e "$INFO End!"
