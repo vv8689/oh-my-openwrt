@@ -426,8 +426,8 @@ archive_ipks
 # 仅作为测试使用
 replace_repo_url(){
     cd $imagebuilder_path
-    org_url="http://downloads.openwrt.org"
-    mirror_url="https://openwrt.proxy.ustclug.org"
+    org_url="http:\/\/downloads.openwrt.org"
+    mirror_url="https:\/\/openwrt.proxy.ustclug.org"
     if [ ! -e repositories.conf ]; then
         return
     fi
