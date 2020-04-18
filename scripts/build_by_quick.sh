@@ -453,8 +453,8 @@ do_build_bin(){
     if [ -n "$result" ]; then
         cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
     fi
-    local result=`ls $artifact_ipk_path/base/$cpu_arch | grep "$cpu_arch.ipk"`
-    if [ -n "$result" ]; then
+    local result2=`ls $artifact_ipk_path/base/$cpu_arch | grep "$cpu_arch.ipk"`
+    if [ -n "$result2" ]; then
         cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
     fi
     rm -rf $imagebuilder_path/packages/awesome/Packages*
@@ -488,60 +488,29 @@ do_build_bin(){
     fi
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
-    ## factory
     awesome_factory_pkgs="luci-app-ramfree luci-app-autoreboot luci-i18n-autoreboot-zh-cn"
-    ## sysupgrade
-    awesome_sysupgrade_pkgs="$awesome_factory_pkgs luci-app-ssr-plus-mini"
 
-    if [ $build_type == "factory" ]; then
-        image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
-        files_path="$script_root_path/devices/$device/factory"
-    else
-        image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_sysupgrade_pkgs"
-        files_path="$script_root_path/devices/$device/sysupgrade"
-    fi
+    # make args setting
+    image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
+    files_path="$script_root_path/devices/$device/factory"
 
-    if [ -d $files_path ]; then
-        make image PROFILE=$device_profile PACKAGES="${image_pkgs}" FILES=$files_path
-    else
-        make image PROFILE=$device_profile PACKAGES="${image_pkgs}"
-    fi
-
+    # make image
+    make image PROFILE=$device_profile PACKAGES="${image_pkgs}" FILES=$files_path
+    
     echo -e "$INFO build $build_type bin done!"
 }
-
-choose_build_type(){
-    while true; do
-        echo -n -e "$INPUT"
-        read -p "请选择固件类型 ( 0/1/2 | 0 取消, 1 出厂固件, 2 升级固件 ) : " yn
-        echo
-        case $yn in
-            1 ) build_type="factory"; do_build_bin; break;;
-            2 ) build_type="sysupgrade"; do_build_bin; break;;
-            0  | "") echo -e "$INFO 取消编译"; break;;
-            * ) echo "输入 1(出厂固件), 2(升级固件) 或 0(取消) 以确认";;
-        esac
-    done
-}
-
 build_bin(){
     while true; do
         echo -n -e "$INPUT"
         read -p "是否编译 Awesome OpenWrt 固件 (y/n) ? " yn
         echo
         case $yn in
-            [Yy]* ) choose_build_type; break;;
+            [Yy]* ) do_build_bin; break;;
             [Nn]* | "" ) break;;
             * ) echo "输入 y 或 n 以确认";;
         esac
     done
 }
-
-# result=`ls $artifact_ipk_path/luci | grep '.ipk'`
-# if [ -n "$result" ]; then
-#     build_bin
-# fi
-
 build_bin
 
 # 归档 bins
