@@ -448,8 +448,14 @@ do_build_bin(){
 
     # add ipks to imagebuilder
     mkdir -p $imagebuilder_path/packages/awesome
-    cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
-    cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
+    local result=`ls $artifact_ipk_path/luci | grep '.ipk'`
+    if [ -n "$result" ]; then
+        cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
+    fi
+    local result=`ls $artifact_ipk_path/$cpu_arch | grep "$cpu_arch.ipk"`
+    if [ -n "$result" ]; then
+        cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
+    fi
     rm -rf $imagebuilder_path/packages/awesome/Packages*
 
     # replace_repo_url
@@ -530,10 +536,12 @@ build_bin(){
     done
 }
 
-result=`ls $artifact_ipk_path/luci | grep '.ipk'`
-if [ -n "$result" ]; then
-    build_bin
-fi
+# result=`ls $artifact_ipk_path/luci | grep '.ipk'`
+# if [ -n "$result" ]; then
+#     build_bin
+# fi
+
+build_bin
 
 # 归档 bins
 do_archive_bins(){
