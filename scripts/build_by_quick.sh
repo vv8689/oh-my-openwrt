@@ -399,7 +399,10 @@ build_ipks
 do_archive_ipks(){
     cd $ipk_path/awesome
     cp -f *_all.ipk $artifact_ipk_path/luci
-    cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
+    result=`ls | grep "$cpu_arch.ipk"`
+    if [ -n "$result" ]; then
+        cp -f *_$cpu_arch.ipk $artifact_ipk_path/base/$cpu_arch
+    fi
 }
 archive_ipks(){
     while true; do
