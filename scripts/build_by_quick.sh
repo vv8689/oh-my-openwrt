@@ -250,7 +250,7 @@ fix_v2ray_dep
 # gen diffconfig
 update_diffconfig(){
     cd $sdk_path
-    ./scripts/diffconfig.sh >diffconfig 1>/dev/null 2>&1
+    ./scripts/diffconfig.sh >.config.diff 1>/dev/null 2>&1
 }
 # make menuconfig
 do_make_menuconfig(){
@@ -261,7 +261,7 @@ do_make_menuconfig(){
 default_config(){
     cd $sdk_path
     if [ ! -e .config ]; then
-        diffconfig_file_path="$script_root_path/devices/$device/source-diffconfig.info"
+        diffconfig_file_path="$script_root_path/devices/$device/.config.diff"
         if [ -e $diffconfig_file_path ]; then
             cp -f $diffconfig_file_path .config
             make defconfig
