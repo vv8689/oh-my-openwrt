@@ -452,7 +452,7 @@ do_build_bin(){
     if [ -n "$result" ]; then
         cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
     fi
-    local result=`ls $artifact_ipk_path/$cpu_arch | grep "$cpu_arch.ipk"`
+    local result=`ls $artifact_ipk_path/base/$cpu_arch | grep "$cpu_arch.ipk"`
     if [ -n "$result" ]; then
         cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
     fi
