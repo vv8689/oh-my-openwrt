@@ -426,8 +426,8 @@ archive_ipks
 # 仅作为测试使用
 replace_repo_url(){
     cd $imagebuilder_path
-    org_url="downloads.openwrt.org"
-    mirror_url="openwrt.proxy.ustclug.org"
+    org_url="http://downloads.openwrt.org"
+    mirror_url="https://openwrt.proxy.ustclug.org"
     if [ ! -e repositories.conf ]; then
         return
     fi
@@ -458,7 +458,7 @@ do_build_bin(){
     fi
     rm -rf $imagebuilder_path/packages/awesome/Packages*
 
-    # replace_repo_url
+    replace_repo_url
 
     # fix Imagebuilder: "opkg_install_pkg: Package size mismatch" error
     # @https://bugs.openwrt.org/index.php?do=details&task_id=2690&status%5B0%5D=
