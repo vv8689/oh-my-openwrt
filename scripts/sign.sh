@@ -171,15 +171,16 @@ if [ ! -e $root_path/openwrt-awesome.key ]; then
     echo -e "$INFO openwrt-awesome.key gen done!"
 fi
 
-while true; do
-    echo -n -e "$INPUT"
-    read -p "请选择需要索引的目录 ( 0/1 | 0 取消, 1 19.07.2 ) : " yn
-    echo
-    case $yn in
-        1 ) index_type=1; break;;
-        0  | "") echo -e "$INFO End!"; exit;;
-        * ) echo "输入 1(19.07.2) 或 0(取消) 以确认";;
-    esac
-done
+# while true; do
+#     echo -n -e "$INPUT"
+#     read -p "请选择需要索引的目录 ( 0/1 | 0 取消, 1 19.07.2 ) : " yn
+#     echo
+#     case $yn in
+#         1 ) index_type=1; break;;
+#         0  | "") echo -e "$INFO End!"; exit;;
+#         * ) echo "输入 1(19.07.2) 或 0(取消) 以确认";;
+#     esac
+# done
 
+index_type=1
 sign_dir_ipks
