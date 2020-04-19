@@ -375,6 +375,9 @@ do_build_ipks(){
 
 
     ############## test
+    make package/luci-app-autoreboot/compile V=s
+    make package/luci-app-ramfree/compile V=s
+
     # make package/luci-app-ssr-plus-mini/compile V=s
     # make package/luci-app-passwall-mini/compile V=s
     make package/luci-app-ssr-plus/compile V=s
