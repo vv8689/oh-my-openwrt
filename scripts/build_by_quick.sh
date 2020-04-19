@@ -345,6 +345,7 @@ do_build_ipks(){
     # make package/luci-app-fileassistant/compile V=s
     # make package/luci-app-flowoffload/compile V=s
     # make package/luci-app-ipsec-vpnserver/compile V=s
+    # make package/luci-app-openclash/compile V=s
     # make package/luci-app-passwall/compile V=s
     # make package/luci-app-passwall-mini/compile V=s
     # make package/luci-app-pptp-vpnserver/compile V=s
@@ -380,20 +381,23 @@ do_build_ipks(){
     # make package/v2ray-plugin/compile V=s
     # make package/vlmcsd/compile V=s
 
+    ################# end build for detail ######################
+
+    echo -e "$INFO build ipks done!"
 
     ## factory ##
     make package/luci-app-autoreboot/compile V=s
     make package/luci-app-ramfree/compile V=s
 
     ## test ##
+    # 
     # make package/luci-app-ssr-plus-mini/compile V=s
     # make package/luci-app-passwall-mini/compile V=s
+    # 
     # make package/luci-app-ssr-plus/compile V=s
     # make package/luci-app-passwall/compile V=s
-
-    ################# end build for detail ######################
-
-    echo -e "$INFO build ipks done!"
+    # make package/luci-app-adbyby-plus/compile V=s
+    # make package/luci-app-smartdns/compile V=s
 }
 build_ipks(){
     while true; do
