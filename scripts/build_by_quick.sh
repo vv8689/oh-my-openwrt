@@ -345,6 +345,7 @@ do_build_ipks(){
     # make package/luci-app-fileassistant/compile V=s
     # make package/luci-app-flowoffload/compile V=s
     # make package/luci-app-ipsec-vpnserver/compile V=s
+    # make package/luci-app-netdata/compile V=s
     # make package/luci-app-openclash/compile V=s
     # make package/luci-app-passwall/compile V=s
     # make package/luci-app-passwall-mini/compile V=s
@@ -398,6 +399,8 @@ do_build_ipks(){
     # make package/luci-app-passwall/compile V=s
     # make package/luci-app-adbyby-plus/compile V=s
     # make package/luci-app-smartdns/compile V=s
+    # make package/luci-app-netdata/compile V=s
+
 }
 build_ipks(){
     while true; do
