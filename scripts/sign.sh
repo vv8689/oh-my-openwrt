@@ -14,9 +14,9 @@ set -e
 # device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
 echo -e "$INFO Awesome OpenWrt oh-my-openwrt 当前支持以下路由器设备:"
 echo
-echo "        1. 小米路由器青春版"
-echo "        2. Newifi3"
-echo "        3. 软路由"
+echo "        1. 软路由"
+echo "        2. 小米路由器青春版"
+echo "        3. Newifi3"
 echo
 echo "        0. 取消"
 echo
@@ -38,14 +38,14 @@ gen_device_desc(){
     version="19.07.2"
 
     if [ $device_type -eq 1 ]; then
-        device="xiaomi"
-        cpu_arch="mipsel_24kc"
-    elif [ $device_type -eq 2 ]; then
-        device="newifi3"
-        cpu_arch="mipsel_24kc"
-    elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu_arch="x86_64"
+    elif [ $device_type -eq 2 ]; then
+        device="xiaomi"
+        cpu_arch="mipsel_24kc"
+    elif [ $device_type -eq 3 ]; then
+        device="newifi3"
+        cpu_arch="mipsel_24kc"
     else
         echo -e "$INFO End!"
         exit
