@@ -155,7 +155,7 @@ sign_dir_ipks(){
     artifact_path="$root_path/artifacts"
 
     if [ $index_type -eq 1 ]; then
-        artifact_root_path="$artifact_path/19.07.2"
+        artifact_root_path="$artifact_path/$version"
     else
         echo -e "$INFO End!"
         exit
@@ -174,12 +174,12 @@ fi
 
 # while true; do
 #     echo -n -e "$INPUT"
-#     read -p "请选择需要索引的目录 ( 0/1 | 0 取消, 1 19.07.2 ) : " yn
+#     read -p "请选择需要索引的目录 ( 0/1 | 0 取消, 1 $version ) : " yn
 #     echo
 #     case $yn in
 #         1 ) index_type=1; break;;
 #         0  | "") echo -e "$INFO End!"; exit;;
-#         * ) echo "输入 1(19.07.2) 或 0(取消) 以确认";;
+#         * ) echo "输入 1($version) 或 0(取消) 以确认";;
 #     esac
 # done
 
