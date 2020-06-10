@@ -230,7 +230,7 @@ fix_sys(){
         sudo ln -s /lib/x86_64-linux-gnu/ld-2.27.so /lib/ld-linux-x86-64.so.2
     fi
 }
-# fix_sys
+fix_sys
 
 # 修复 v2ray 依赖问题
 fix_v2ray_dep(){
@@ -450,14 +450,14 @@ archive_ipks
 # 仅作为测试使用
 replace_repo_url(){
     cd $imagebuilder_path
-    org_url="http:\/\/downloads.openwrt.org"
-    # mirror_url="https:\/\/openwrt.proxy.ustclug.org"
-    mirror_url="https:\/\/mirrors.bfsu.edu.cn/openwrt"
+    org_url="http://downloads.openwrt.org"
+    # mirror_url="https://openwrt.proxy.ustclug.org"
+    mirror_url="https://mirrors.bfsu.edu.cn/openwrt"
     if [ ! -e repositories.conf ]; then
         return
     fi
     if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
-        sed -i "s/$org_url/$mirror_url/g" repositories.conf
+        sed -i "s@$org_url@$mirror_url@g" repositories.conf
     fi
 }
 
