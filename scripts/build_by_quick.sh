@@ -11,12 +11,12 @@ WARNING="\033[33m * Warning: $NORM"
 set -e
 
 # info
-# device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
+# device_type: 1 软路由, 2 小米路由器青春版, 3 Newifi3
 echo -e "$INFO Awesome OpenWrt oh-my-openwrt 当前支持以下路由器设备:"
 echo
-echo "        1. 小米路由器青春版"
-echo "        2. Newifi3"
-echo "        3. 软路由"
+echo "        1. 软路由"
+echo "        2. 小米路由器青春版"
+echo "        3. Newifi3"
 echo
 echo "        0. 取消"
 echo
@@ -34,46 +34,49 @@ while true; do
     esac
 done
 
+my_packages_url="https://github.com/awesome-openwrt/openwrt-packages"
+
 gen_device_desc(){
-    version="19.07.2"
+    version="19.07.3"
     gcc_version="7.5.0"
-    bin_ext=".bin"
+    img_ext=".bin"
 
     if [ $device_type -eq 1 ]; then
-        device="xiaomi"
-        cpu1="ramips"
-        cpu2="mt76x8"
-        cpu_arch="mipsel_24kc"
-        device_profile="miwifi-nano"
-    elif [ $device_type -eq 2 ]; then
-        device="newifi3"
-        cpu1="ramips"
-        cpu2="mt7621"
-        cpu_arch="mipsel_24kc"
-        device_profile="d-team_newifi-d2"
-    elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu1="x86"
         cpu2="64"
         cpu_arch="x86_64"
         device_profile="Generic"
-        bin_ext=".img.gz"
+        img_ext=".img.gz"
+    elif [ $device_type -eq 2 ]; then
+        device="xiaomi"
+        cpu1="ramips"
+        cpu2="mt76x8"
+        cpu_arch="mipsel_24kc"
+        device_profile="miwifi-nano"
+    elif [ $device_type -eq 3 ]; then
+        device="newifi3"
+        cpu1="ramips"
+        cpu2="mt7621"
+        cpu_arch="mipsel_24kc"
+        device_profile="d-team_newifi-d2"
     else
         echo -e "$INFO End!"
         exit
     fi
 
     # OpenWrt 官方
-    # base_url="http://downloads.openwrt.org/releases"
+    # base_url="http://downloads.openwrt.org"
     # 清华大学镜像站
-    # base_url="https://mirrors.tuna.tsinghua.edu.cn/openwrt/releases"
+    # base_url="https://mirrors.tuna.tsinghua.edu.cn/openwrt"
     # 中科大镜像站
-    # base_url="https://mirrors.ustc.edu.cn/lede/releases"
+    # base_url="https://mirrors.ustc.edu.cn/lede"
     # 教育网高速镜像站
-    base_url="https://openwrt.proxy.ustclug.org/releases"
+    # base_url="https://openwrt.proxy.ustclug.org"
+    base_url="https://mirrors.bfsu.edu.cn/openwrt"
     
-    imagebuilder_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
-    sdk_url="$base_url/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
+    imagebuilder_url="$base_url/releases/$version/targets/$cpu1/$cpu2/openwrt-imagebuilder-$version-$cpu1-$cpu2.Linux-x86_64.tar.xz"
+    sdk_url="$base_url/releases/$version/targets/$cpu1/$cpu2/openwrt-sdk-$version-$cpu1-${cpu2}_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz"
 }
 
 gen_device_desc
@@ -177,9 +180,9 @@ pre_archive_dir
 # add packages to feeds.conf
 add_packages2feeds(){
     # import awesome code to sdk
-    if [ `grep -c "src-git awesome https://github.com/awesome-openwrt/openwrt-packages" $sdk_path/feeds.conf.default` -eq 0 ]; then
+    if [ `grep -c "src-git awesome $my_packages_url" $sdk_path/feeds.conf.default` -eq 0 ]; then
         echo "add packages to feeds..."
-        echo "src-git awesome https://github.com/awesome-openwrt/openwrt-packages">>$sdk_path/feeds.conf.default
+        echo "src-git awesome $my_packages_url">>$sdk_path/feeds.conf.default
         echo -e "$INFO add packages to feeds done!"
     fi
 }
@@ -448,7 +451,8 @@ archive_ipks
 replace_repo_url(){
     cd $imagebuilder_path
     org_url="http:\/\/downloads.openwrt.org"
-    mirror_url="https:\/\/openwrt.proxy.ustclug.org"
+    # mirror_url="https:\/\/openwrt.proxy.ustclug.org"
+    mirror_url="https:\/\/mirrors.bfsu.edu.cn/openwrt"
     if [ ! -e repositories.conf ]; then
         return
     fi
@@ -536,9 +540,9 @@ build_bin
 # 归档 bins
 do_archive_bins(){
     cd $bin_path
-    result=`find . -name "openwrt-${version}*combined-squashfs${bin_ext}"`
+    result=`find . -name "openwrt-${version}*combined-squashfs${img_ext}"`
     if [ -n "$result" ]; then
-        cp -f openwrt-${version}*combined-squashfs${bin_ext} $artifact_bin_path
+        cp -f openwrt-${version}*combined-squashfs${img_ext} $artifact_bin_path
     fi
 }
 archive_bins(){

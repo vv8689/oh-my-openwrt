@@ -11,12 +11,12 @@ WARNING="\033[33m * Warning: $NORM"
 set -e
 
 # info
-# device_type: 1 小米路由器青春版, 2 Newifi3, 3 软路由
+# device_type:  1 软路由, 2 小米路由器青春版, 3 Newifi3
 echo -e "$INFO Awesome OpenWrt 当前支持以下路由器设备:"
 echo
-echo "        1. 小米路由器青春版"
-echo "        2. Newifi3"
-echo "        3. 软路由"
+echo "        1. 软路由"
+echo "        2. 小米路由器青春版"
+echo "        3. Newifi3"
 echo
 echo "        0. 取消"
 echo
@@ -34,27 +34,29 @@ while true; do
     esac
 done
 
+my_packages_url="https://github.com/awesome-openwrt/openwrt-packages"
+
 gen_device_desc(){
-    version="19.07.2"
+    version="19.07.3"
 
     if [ $device_type -eq 1 ]; then
-        device="xiaomi"
-        cpu1="ramips"
-        cpu2="mt76x8"
-        cpu_arch="mipsel_24kc"
-        bin_ext=".bin"
-    elif [ $device_type -eq 2 ]; then
-        device="newifi3"
-        cpu1="ramips"
-        cpu2="mt7621"
-        cpu_arch="mipsel_24kc"
-        bin_ext=".bin"
-    elif [ $device_type -eq 3 ]; then
         device="x86_64"
         cpu1="x86"
         cpu2="64"
         cpu_arch="x86_64"
-        bin_ext=".img.gz"
+        img_ext=".img.gz"
+    elif [ $device_type -eq 2 ]; then
+        device="xiaomi"
+        cpu1="ramips"
+        cpu2="mt76x8"
+        cpu_arch="mipsel_24kc"
+        img_ext=".bin"
+    elif [ $device_type -eq 3 ]; then
+        device="newifi3"
+        cpu1="ramips"
+        cpu2="mt7621"
+        cpu_arch="mipsel_24kc"
+        img_ext=".bin"
     else
         echo -e "$INFO End!"
         exit
@@ -157,9 +159,9 @@ pre_archive_dir
 # add packages to feeds.conf
 add_packages2feeds(){
     # import awesome-openwrt code
-    if [ `grep -c "src-git awesome https://github.com/awesome-openwrt/openwrt-packages" $code_path/feeds.conf.default` -eq 0 ]; then
+    if [ `grep -c "src-git awesome $my_packages_url" $code_path/feeds.conf.default` -eq 0 ]; then
         echo "add packages to feeds..."
-        echo "src-git awesome https://github.com/awesome-openwrt/openwrt-packages">>$code_path/feeds.conf.default
+        echo "src-git awesome $my_packages_url">>$code_path/feeds.conf.default
         echo -e "$INFO add packages to feeds done!"
     fi
 }
@@ -324,7 +326,7 @@ build_bin
 # 归档 bins
 do_archive_bins(){
     cd $bin_path
-    cp -f openwrt-${version}*${bin_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${bin_ext}
+    cp -f openwrt-${version}*${img_ext} $artifact_bin_path/awesome-openwrt-$version-$device-$build_type${img_ext}
 }
 
 archive_bins(){
@@ -340,7 +342,7 @@ archive_bins(){
     done
 }
 
-result=`find $bin_path -name "openwrt-${version}*${bin_ext}"`
+result=`find $bin_path -name "openwrt-${version}*${img_ext}"`
 if [ -n "$result" ]; then
     archive_bins
 fi
