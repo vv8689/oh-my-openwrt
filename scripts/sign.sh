@@ -35,7 +35,8 @@ while true; do
 done
 
 gen_device_desc(){
-    version="19.07.2"
+    version="19.07.3"
+    gcc_version="7.5.0"
 
     if [ $device_type -eq 1 ]; then
         device="x86_64"
@@ -75,7 +76,7 @@ pre_signtool(){
         echo -e "$INFO signtool already set done!"
     else
         echo "set signtool..."
-        wget -O sdk.tar.xz -t 5 -T 60 https://mirrors.ustc.edu.cn/lede/releases/19.07.2/targets/ramips/mt76x8/openwrt-sdk-19.07.2-ramips-mt76x8_gcc-7.5.0_musl.Linux-x86_64.tar.xz
+        wget -O sdk.tar.xz -t 5 -T 60 https://mirrors.ustc.edu.cn/lede/releases/$version/targets/ramips/mt76x8/openwrt-sdk-$version-ramips-mt76x8_gcc-${gcc_version}_musl.Linux-x86_64.tar.xz
         echo "download signtool done."
         echo "extract signtool..."
         tar -xvf sdk.tar.xz 1>/dev/null 2>&1
