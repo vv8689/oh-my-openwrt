@@ -462,10 +462,10 @@ set_repo(){
     my_packages_repo="$artifact_ipk_path/luci"
     my_packages_repo_base="$artifact_ipk_path/base/$cpu_arch"
     if [ `grep -c "src awesome $my_packages_repo" $imagebuilder_path/repositories.conf` -eq 0 ]; then
-        echo "add packages to feeds..."
-        echo "src-git awesome $my_packages_repo">>$imagebuilder_path/repositories.conf
-        echo "src-git awesome_base $my_packages_repo_base">>$imagebuilder_path/repositories.conf
-        echo -e "$INFO add packages to feeds done!"
+        echo "add packages to repo..."
+        echo "src awesome $my_packages_repo">>$imagebuilder_path/repositories.conf
+        echo "src awesome_base $my_packages_repo_base">>$imagebuilder_path/repositories.conf
+        echo -e "$INFO add packages to repo done!"
     fi
 }
 
@@ -520,8 +520,7 @@ do_build_bin(){
     fi
 
     # 查看自定义软件包 ./scripts/feeds list -r awesome
-    # awesome_factory_pkgs="luci-app-ramfree luci-app-autoreboot luci-i18n-autoreboot-zh-cn"
-    awesome_factory_pkgs=""
+    awesome_factory_pkgs="luci-app-ramfree luci-app-autoreboot luci-i18n-autoreboot-zh-cn"
 
     # make args setting
     image_pkgs="$org_original_pkgs $org_custom_pkgs $awesome_factory_pkgs"
