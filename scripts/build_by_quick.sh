@@ -461,10 +461,10 @@ set_repo(){
     fi
     my_packages_repo="$artifact_ipk_path/luci"
     my_packages_repo_base="$artifact_ipk_path/base/$cpu_arch"
-    if [ `grep -c "src awesome $my_packages_repo" $imagebuilder_path/repositories.conf` -eq 0 ]; then
+    if [ `grep -c "src awesome file://$my_packages_repo" $imagebuilder_path/repositories.conf` -eq 0 ]; then
         echo "add packages to repo..."
-        echo "src awesome $my_packages_repo">>$imagebuilder_path/repositories.conf
-        echo "src awesome_base $my_packages_repo_base">>$imagebuilder_path/repositories.conf
+        echo "src awesome file://$my_packages_repo">>$imagebuilder_path/repositories.conf
+        echo "src awesome_base file://$my_packages_repo_base">>$imagebuilder_path/repositories.conf
         echo -e "$INFO add packages to repo done!"
     fi
 }
