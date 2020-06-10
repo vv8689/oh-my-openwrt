@@ -446,9 +446,9 @@ archive_ipks(){
 archive_ipks
 
 # build img
+# 增加自定义包仓库地址
 # 替换官方仓库地址为教育网高速镜像源
-# 仅作为测试使用
-replace_repo_url(){
+set_repo(){
     cd $imagebuilder_path
     org_url="http://downloads.openwrt.org"
     # mirror_url="https://openwrt.proxy.ustclug.org"
@@ -458,6 +458,14 @@ replace_repo_url(){
     fi
     if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
         sed -i "s@$org_url@$mirror_url@g" repositories.conf
+    fi
+    my_packages_repo="$artifact_ipk_path/luci"
+    my_packages_repo_base="$artifact_ipk_path/base/$cpu_arch"
+    if [ `grep -c "src awesome $my_packages_repo" $imagebuilder_path/repositories.conf` -eq 0 ]; then
+        echo "add packages to feeds..."
+        echo "src-git awesome $my_packages_repo">>$imagebuilder_path/repositories.conf
+        echo "src-git awesome_base $my_packages_repo_base">>$imagebuilder_path/repositories.conf
+        echo -e "$INFO add packages to feeds done!"
     fi
 }
 
@@ -469,21 +477,21 @@ do_build_bin(){
     # clean
     rm -rf $bin_path
     mkdir -p $bin_path
-    rm -rf $imagebuilder_path/packages/awesome
+    # rm -rf $imagebuilder_path/packages/awesome
 
     # add ipks to imagebuilder
-    mkdir -p $imagebuilder_path/packages/awesome
-    local result=`ls $artifact_ipk_path/luci | grep '.ipk'`
-    if [ -n "$result" ]; then
-        cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
-    fi
-    local result2=`ls $artifact_ipk_path/base/$cpu_arch | grep "$cpu_arch.ipk"`
-    if [ -n "$result2" ]; then
-        cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
-    fi
-    rm -rf $imagebuilder_path/packages/awesome/Packages*
+    # mkdir -p $imagebuilder_path/packages/awesome
+    # local result=`ls $artifact_ipk_path/luci | grep '.ipk'`
+    # if [ -n "$result" ]; then
+    #     cp -f $artifact_ipk_path/luci/* $imagebuilder_path/packages/awesome/
+    # fi
+    # local result2=`ls $artifact_ipk_path/base/$cpu_arch | grep "$cpu_arch.ipk"`
+    # if [ -n "$result2" ]; then
+    #     cp -f $artifact_ipk_path/base/$cpu_arch/* $imagebuilder_path/packages/awesome/
+    # fi
+    # rm -rf $imagebuilder_path/packages/awesome/Packages*
 
-    replace_repo_url
+    set_repo
 
     # fix Imagebuilder: "opkg_install_pkg: Package size mismatch" error
     # @https://bugs.openwrt.org/index.php?do=details&task_id=2690&status%5B0%5D=
