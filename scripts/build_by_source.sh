@@ -75,7 +75,7 @@ cd build
 # path
 root_path=`pwd`
 device_path="$root_path/$device"
-code_path="$device_path/openwrt"
+code_path="$device_path/openwrt-$version"
 ipk_path="$code_path/bin/packages/$cpu_arch"
 bin_path="$code_path/bin/targets/$cpu1/$cpu2"
 artifact_root_path="$root_path/artifacts/$version"
@@ -95,10 +95,10 @@ pre_archive_dir(){
     if [ ! -d $bin_path ]; then
         mkdir -p $bin_path
     fi
-    # 软链接，方便快速查看
-    if [ ! -L $device_path/bins ]; then
-        ln -s $bin_path $device_path/bins
-    fi
+    # # 软链接，方便快速查看
+    # if [ ! -L $device_path/bins ]; then
+    #     ln -s $bin_path $device_path/bins
+    # fi
     # 归档构建产物
     if [ ! -d $artifact_bin_path ]; then
         mkdir -p $artifact_bin_path
@@ -107,10 +107,10 @@ pre_archive_dir(){
     if [ ! -d $ipk_path/awesome ]; then
         mkdir -p $ipk_path/awesome
     fi
-    # 软链接，方便快速查看
-    if [ ! -L $device_path/ipks ]; then
-        ln -s $ipk_path $device_path/ipks
-    fi
+    # # 软链接，方便快速查看
+    # if [ ! -L $device_path/ipks ]; then
+    #     ln -s $ipk_path $device_path/ipks
+    # fi
     # 归档构建产物
     if [ ! -d $artifact_ipk_path ]; then
         mkdir -p $artifact_ipk_path

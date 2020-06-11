@@ -64,7 +64,7 @@ cd build
 
 # path
 root_path=`pwd`
-signtool_path="$root_path/signtool"
+signtool_path="$root_path/signtool-$version"
 artifact_root_path="$root_path/artifacts/$version"
 artifact_bin_path="$artifact_root_path/targets/$device"
 artifact_ipk_path="$artifact_root_path/packages"
