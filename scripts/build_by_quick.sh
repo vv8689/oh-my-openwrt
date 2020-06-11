@@ -37,7 +37,7 @@ done
 my_packages_url="https://github.com/awesome-openwrt/openwrt-packages"
 
 gen_device_desc(){
-    version="19.07.3"
+    version="19.07.2"
     gcc_version="7.5.0"
     img_ext=".bin"
 
