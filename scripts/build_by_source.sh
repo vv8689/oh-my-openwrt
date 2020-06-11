@@ -37,7 +37,7 @@ done
 my_packages_url="https://github.com/awesome-openwrt/openwrt-packages"
 
 gen_device_desc(){
-    version="19.07.2"
+    version="19.07.3"
 
     if [ $device_type -eq 1 ]; then
         device="x86_64"

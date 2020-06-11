@@ -35,7 +35,7 @@ while true; do
 done
 
 gen_device_desc(){
-    version="19.07.2"
+    version="19.07.3"
     gcc_version="7.5.0"
 
     if [ $device_type -eq 1 ]; then
