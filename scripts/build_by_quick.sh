@@ -91,9 +91,11 @@ cd build
 # path
 root_path=`pwd`
 device_path="$root_path/$device"
-sdk_path="$device_path/sdk-$version"
+sdk_folder="sdk-$version"
+sdk_path="$device_path/$sdk_folder"
 ipk_path="$sdk_path/bin/packages/$cpu_arch"
-imagebuilder_path="$device_path/imagebuilder-$version"
+imagebuilder_folder="imagebuilder-$version"
+imagebuilder_path="$device_path/$imagebuilder_folder"
 bin_path="$imagebuilder_path/bin/targets/$cpu1/$cpu2"
 artifact_root_path="$root_path/artifacts/$version"
 artifact_bin_path="$artifact_root_path/targets/$device"
@@ -116,7 +118,7 @@ pre_imagebuilder(){
         echo "download imagebuilder done."
         echo "extract imagebuilder..."
         tar -xvf imagebuilder.tar.xz 1>/dev/null 2>&1
-        mv openwrt-imagebuilder-$version-* imagebuilder
+        mv openwrt-imagebuilder-$version-* $imagebuilder_folder
         rm -f imagebuilder.tar.xz
         echo -e "$INFO imagebuilder set done."
     fi
@@ -133,7 +135,7 @@ pre_sdk(){
         echo "download sdk done."
         echo "extract sdk..."
         tar -xvf sdk.tar.xz 1>/dev/null 2>&1
-        mv openwrt-sdk-$version-* sdk
+        mv openwrt-sdk-$version-* $sdk_folder
         rm -rf sdk.tar.xz
         echo -e "$INFO sdk set done."
     fi
