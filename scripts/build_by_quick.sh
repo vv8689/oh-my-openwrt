@@ -110,7 +110,7 @@ cd $device_path
 ######################## set env ########################
 # image builder
 pre_imagebuilder(){
-    if [ -d imagebuilder ]; then
+    if [ -d $imagebuilder_folder ]; then
         echo -e "$INFO imagebuilder already set done!"
     else
         echo "download imagebuilder..."
@@ -127,7 +127,7 @@ pre_imagebuilder
 
 # sdk
 pre_sdk(){
-    if [ -d sdk ]; then
+    if [ -d $sdk_folder ]; then
         echo -e "$INFO sdk already set done!"
     else
         echo "download sdk..."
