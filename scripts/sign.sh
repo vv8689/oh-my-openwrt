@@ -64,7 +64,8 @@ cd build
 
 # path
 root_path=`pwd`
-signtool_path="$root_path/signtool-$version"
+singtool_folder="signtool-$version"
+signtool_path="$root_path/$singtool_folder"
 artifact_root_path="$root_path/artifacts/$version"
 artifact_bin_path="$artifact_root_path/targets/$device"
 artifact_ipk_path="$artifact_root_path/packages"
@@ -80,7 +81,7 @@ pre_signtool(){
         echo "download signtool done."
         echo "extract signtool..."
         tar -xvf sdk.tar.xz 1>/dev/null 2>&1
-        mv openwrt-sdk-$version-* signtool
+        mv openwrt-sdk-$version-* $singtool_folder
         rm -rf sdk.tar.xz
         echo -e "$INFO set signtool done."
     fi
