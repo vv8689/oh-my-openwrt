@@ -392,6 +392,9 @@ do_build_ipks(){
     ## factory ##
     make package/luci-app-autoreboot/compile V=s
     make package/luci-app-ramfree/compile V=s
+    make package/luci-app-netdata/compile V=s
+    make package/luci-app-ssr-plus/compile V=s
+    make package/luci-app-passwall/compile V=s
 
     ## test ##
     # 
@@ -446,19 +449,22 @@ archive_ipks(){
 archive_ipks
 
 # build img
-# 增加自定义包仓库地址
-# 替换官方仓库地址为教育网高速镜像源
+# 设置仓库
 set_repo(){
     cd $imagebuilder_path
-    org_url="http://downloads.openwrt.org"
-    # mirror_url="https://openwrt.proxy.ustclug.org"
-    mirror_url="https://mirrors.bfsu.edu.cn/openwrt"
     if [ ! -e repositories.conf ]; then
         return
     fi
-    if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
-        sed -i "s@$org_url@$mirror_url@g" repositories.conf
-    fi
+
+    # 替换官方仓库地址为教育网高速镜像源
+    # org_url="http://downloads.openwrt.org"
+    # # mirror_url="https://openwrt.proxy.ustclug.org"
+    # mirror_url="https://mirrors.bfsu.edu.cn/openwrt"
+    # if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
+    #     sed -i "s@$org_url@$mirror_url@g" repositories.conf
+    # fi
+    
+    # 增加自定义包仓库地址
     my_packages_repo="$artifact_ipk_path/luci"
     my_packages_repo_base="$artifact_ipk_path/base/$cpu_arch"
     if [ `grep -c "src awesome file://$my_packages_repo" $imagebuilder_path/repositories.conf` -eq 0 ]; then
