@@ -457,12 +457,12 @@ set_repo(){
     fi
 
     # 替换官方仓库地址为教育网高速镜像源
-    # org_url="http://downloads.openwrt.org"
-    # # mirror_url="https://openwrt.proxy.ustclug.org"
-    # mirror_url="https://mirrors.bfsu.edu.cn/openwrt"
-    # if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
-    #     sed -i "s@$org_url@$mirror_url@g" repositories.conf
-    # fi
+    org_url="http://downloads.openwrt.org"
+    # mirror_url="https://openwrt.proxy.ustclug.org"
+    mirror_url="https://mirrors.bfsu.edu.cn/openwrt"
+    if [ `grep -c "$mirror_url" repositories.conf` -eq 0 ]; then
+        sed -i "s@$org_url@$mirror_url@g" repositories.conf
+    fi
     
     # 增加自定义包仓库地址
     my_packages_repo="$artifact_ipk_path/luci"
